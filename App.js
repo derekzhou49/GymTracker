@@ -1,8 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity } from 'react-native';
 
 export default function App() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   return (
     <View style={styles.screen}>
       <View style={styles.title}>
@@ -10,15 +12,25 @@ export default function App() {
       </View>
       <View style={{ padding: 30, }}>
         <Text> Username or Email </Text>
-        <TextInput placeholder="johndoe@example.com" style={styles.input} />
+        <TextInput
+        placeholder="johndoe@example.com"
+        style={styles.input}
+        onChangeText={text => setUsername(text)}/>
       </View>
       <View style={{ padding: 30, }}>
         <Text> Password </Text>
-        <TextInput placeholder="Must have at least 5 characters" style={styles.input} />
+        <TextInput
+        placeholder="Must have at least 5 characters" 
+        style={styles.input}
+        onChangeText={text => setPassword(text)} />
       </View>
       <TouchableOpacity>
         <View style={{ padding: 30, }}>
-          <Button style={{ padding: 10, fontSize: 20 }} title="Sign In" />
+          <Button
+          style={{ padding: 10, fontSize: 20 }}
+          title="Sign In"
+          // for debugging 
+          onPress={() => console.log(`${username} ${password}`)} />
         </View>
       </TouchableOpacity>
       <TouchableOpacity>
