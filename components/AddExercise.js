@@ -10,6 +10,7 @@ export default function AddExercise() {
   return (
       <View style={styles.container}>
           <View style={styles.header}>
+              <Text style = {{fontSize: 30, textAlign:'center',}}> Add an Exercise </Text>
               <TextInput
               style={styles.headerInput}
               placeholder="Exercise Name"
@@ -20,33 +21,34 @@ export default function AddExercise() {
               <Text style={styles.inputName}>Sets</Text>
               <TextInput
               style={styles.inputs}
-              placeholder="Number of Sets"
+              placeholder= " 1 - 5"
               onChangeText={text => setSets(text)} />
 
               <Text style={styles.inputName}>Reps</Text>
               <TextInput
               style={styles.inputs}
-              placeholder="Number of Reps"
+              placeholder=" 8 - 15"
               onChangeText={text => setReps(text)} />
 
               <Text style={styles.inputName}>Weight</Text>
               <TextInput
               style={styles.inputs}
-              placeholder="Weight (lbs)"
+              placeholder="lbs"
               onChangeText={text => setWeight(text)} />
 
               <Text style={styles.inputName}>Notes</Text>
               <TextInput
               style={styles.inputs}
-              placeholder="Notes"
+              placeholder= "Sleep, Nutrition, Difficulty "
             //   multiline={true}
               onChangeText={text => setNotes(text)} />
           </View>
 
-          <View>
-              <Button
-              title="Submit" />
-          </View>
+        <TouchableOpacity> 
+            <View style = {styles.submit}>
+                <Text style = {{fontSize: 25, textAlign: 'center', }}> Submit </Text>
+            </View>
+        </TouchableOpacity>  
       </View>
   );
 }
@@ -54,7 +56,7 @@ export default function AddExercise() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "grey"
+        backgroundColor: "white"
     },
     header: {
         textAlign: "center",
@@ -62,23 +64,30 @@ const styles = StyleSheet.create({
     },
     headerInput: {
         textAlign: "center",
-        fontSize: 30
+        fontSize: 30,
+        paddingTop: 20,
     },
     inputContainer: {
 
     },
     inputName: {
-        textAlign: "center"
+        textAlign: "center",
+        fontSize: 20,
     },
     inputs: {
         textAlign: "center",
         paddingVertical: 30,
-        paddingTop: 10
+        paddingTop: 10,
+        fontSize: 20,
     },
     notes: {
 
     },
     submit: {
-        paddingTop: 20
+        padding: 20,
+        marginVertical: 10,
+        backgroundColor: 'pink',
+        borderColor: 'black',
+        borderRadius: 25,
     }
 });
