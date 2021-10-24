@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, FlatList, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, FlatList, SafeAreaView, Alert } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { NavigationContainer, useLinkProps } from '@react-navigation/native';
+// import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-const Tab = createBottomTabNavigator();
+// const Tab = createBottomTabNavigator();
 
-export default function WorkoutChecklist() {
+export default function WorkoutChecklist(props) {
     // Will fetch these from the server once connected to backend
     const workoutNum = 2;
     const workoutName = "Chest and Triceps";
@@ -22,12 +22,21 @@ export default function WorkoutChecklist() {
         }
     }
 
+    const isCompleted = (arr) => {
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i].completed == false) {
+                return false;
+            }
+        }
+        return true;
+    }
+
   return(
       <SafeAreaView>
           <Text style = {{fontSize: 35, fontWeight: 'bold', textAlign: 'center'}}> Workout {workoutNum}</Text>
           <Text style = {{fontSize: 20, fontWeight: 'bold', textAlign: 'center'}}> {workoutName}</Text>
           <View style = {styles.checklist}>
-              <Text style = {styles.date}>{date.getMonth()}/{date.getDay()}/{date.getFullYear()}</Text>
+              <Text style = {styles.date}>{date.getMonth() + 1}/{date.getDate()}/{date.getFullYear()}</Text>
               <FlatList
               data={exercises}
               renderItem={({ item }) => {
@@ -51,9 +60,19 @@ export default function WorkoutChecklist() {
                   )
               }} />
           </View>
-          <TouchableOpacity> 
+          <TouchableOpacity
+          onPress={() => {
+              let completed = isCompleted(exercises);
+              if (completed) {
+                props.navigation.navigate("WorkoutsScreen")
+              } else {
+                  Alert.alert("Wait!", "You haven't finished your workout yet. Are you sure you want to go back now?",
+                  [{text: "Yes", onPress: () => props.navigation.navigate("WorkoutsScreen")}, {text: "No", style: "cancel"}])
+              }
+          }}> 
             <View style = {styles.back}>
-                <Text style = {{fontSize: 25, textAlign: 'center', }}> Back </Text>
+                <Text 
+                style = {{fontSize: 25, textAlign: 'center', }}> Done </Text>
             </View>
         </TouchableOpacity>  
       </SafeAreaView>

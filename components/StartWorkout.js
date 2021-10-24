@@ -1,5 +1,7 @@
+import { TabRouter } from '@react-navigation/routers';
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, SafeAreaView, FlatList } from 'react-native';
+import WorkoutChecklist from './WorkoutChecklist';
 
 const DATA = [
     {
@@ -29,6 +31,9 @@ const Item = ({ title }) => (
   );
 
 function StartWorkout(props) {
+    const onPressHandler = () => {
+      props.navigation.navigate("WorkoutChecklist");
+    }
     const renderItem = ({ item }) => (
         <Item title={item.title} />
       );
@@ -50,10 +55,14 @@ function StartWorkout(props) {
       />
       <TouchableOpacity> 
           <View style = {styles.newWorkout}>
-            <Text style = {{fontSize: 25, textAlign: 'center', }}> Start Workout </Text>
+            <TouchableOpacity
+            onPress={onPressHandler}>
+              <Text style = {{fontSize: 25, textAlign: 'center', }}> Start Workout </Text>
+            </TouchableOpacity>
           </View>
         </TouchableOpacity>  
-        <TouchableOpacity> 
+        <TouchableOpacity
+        onPress={() => props.navigation.navigate("AddExercise")}> 
           <View style = {styles.newWorkout}>
             <Text style = {{fontSize: 25, textAlign: 'center', }}> Add Exercise </Text>
           </View>
@@ -61,6 +70,8 @@ function StartWorkout(props) {
     </SafeAreaView>
     );
   }
+
+export default StartWorkout;
 
 const styles = StyleSheet.create({
   screen: {
