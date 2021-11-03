@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity } from 'react-native';
 import WelcomeScreen from './components/WelcomeScreen';
@@ -5,6 +6,7 @@ import WorkoutChecklist from './components/WorkoutChecklist';
 import WorkoutsScreen from './components/WorkoutsScreen';
 import StartWorkout from './components/StartWorkout';
 import AddExercise from './components/AddExercise';
+import VisualizeLogs from './components/VisualizeLogs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 
@@ -14,6 +16,10 @@ export default function App() {
   return(
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen
+        name="VisualizeLogs"
+        component={VisualizeLogs} />
+
         <Stack.Screen
         name="WorkoutsScreen"
         component={WorkoutsScreen} />
