@@ -3,55 +3,81 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, SafeAreaView, FlatList } from 'react-native';
 import WorkoutChecklist from './WorkoutChecklist';
 
-const DATA = [
+// Dummy data
+// Delete when connected to backend
+var DATA = [
     {
         id: '1',
         title: 'Bench Press',
+        reps: "8",
+        sets: "3",
+        weight: "135",
+        notes: "first exercise"
       },
       {
         id: '2',
         title: 'Iso Lateral Wide Chest',
+        reps: "10",
+        sets: "4",
+        weight: "150",
+        notes: "second exercise"
       },
       {
         id: '3',
         title: 'Chest Flys',
+        reps: "12",
+        sets: "3",
+        weight: "80",
+        notes: "third exercise"
       },
       {
         id: '4',
-        title: 'Tricep Dips',
+        title: 'Assisted Tricep Dips',
+        reps: "11",
+        sets: "4",
+        weight: "25",
+        notes: "fourth exercise"
       },
 ]
-const Item = ({ title }) => (
-    <TouchableOpacity>
-        <View style={styles.workoutItem}>
-            <Text style={{ fontSize: 20, textAlign: 'center', fontWeight: 'bold'}}>{title}</Text>
-            <Text style={{ fontSize: 15, textAlign: 'center'}}> 3 sets, 8 reps, 251 lbs </Text>
-        </View>
-    </TouchableOpacity>
-  );
 
 function StartWorkout(props) {
-    const onPressHandler = () => {
-      props.navigation.navigate("WorkoutChecklist");
-    }
-    const renderItem = ({ item }) => (
-        <Item title={item.title} />
-      );
-  return (
+
+  // Start the workout
+  const [exercises, setExercises] = useState(DATA);
+    
+  const onPressHandler = () => {
+    props.navigation.navigate("WorkoutChecklist");
+  }
+
+  // Function to render each item
+  const renderItem = item => {
+    return (
+      <TouchableOpacity
+      onPress={() => {
+        setExercises(exercises.filter(exercise => exercise.id !== item.item.id))
+      }} >
+        <View style={styles.workoutItem}>
+            <Text style={{ fontSize: 20, textAlign: 'center', fontWeight: 'bold'}}>{item.item.title}</Text>
+            <Text style={{ fontSize: 15, textAlign: 'center'}}> {item.item.sets} sets, {item.item.reps} reps, {item.item.weight} lbs </Text>
+        </View>
+      </TouchableOpacity>
+    )};
+
+      if ((props.route.params !== undefined) && (props.route.params.data !== undefined)) {
+        const newData = props.route.params.data;
+        props.route.params.data = undefined
+        setExercises(prevExercises => [...prevExercises, newData])
+      }
+  
+      return (
     <SafeAreaView style={styles.screen}>
       <View style={styles.title}>
         <Text style={{ fontSize: 35, fontWeight: 'bold'}}> Chest and Triceps </Text>
       </View>
       <FlatList 
       keyExtractor = {(item) => item.id}
-      data = {DATA}
+      data = {exercises}
       renderItem = {renderItem}
-        //   <TouchableOpacity activeOpacity={.8}>
-        //     <View style = {styles.workoutItem}>
-        //         <Text style = {{fontSize: 25, textAlign: 'center',}}> {itemData.item.value} </Text>
-        //         <Text style = {{fontSize: 20, textAlign: 'center',}}> Back and Biceps </Text>
-        //     </View>
-        //   </TouchableOpacity>
       />
       <TouchableOpacity> 
           <View style = {styles.newWorkout}>
