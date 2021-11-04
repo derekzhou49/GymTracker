@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Alert, Dimensions, StyleSheet, Text, View, TextInput, Button, TouchableOpacity, SafeAreaView, FlatList } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
 import SelectDropdown from 'react-native-select-dropdown';
 import DatePicker from 'react-native-datepicker';
-
+import axios from 'axios';
 
 const Graph = (props) => {
 	const [graphData, setGraphData] = useState(props.props);
+	// console.log(graphData);
 	const lineData = {
 		labels: graphData.x,
 		datasets: [
@@ -15,7 +16,7 @@ const Graph = (props) => {
 			},
 		],
 	};
-	return (
+	return  (
 		<View>
 			{ graphData.x.length != 0 ?
 			<LineChart
@@ -47,42 +48,64 @@ const Graph = (props) => {
 const VisualizeLogs = (props) => {
 	const [startDate, setStartDate] = useState("11-02-2021");
 	const [endDate, setEndDate] = useState("11-02-2021")
-	const [workout, setWorkout] = useState("")
-	const [exercise, setExercise] = useState("")
-	const [workoutList, setWorkoutList] = useState("")
-	const [exerciseList, setExerciseList] = useState("")
+	const [workout, setWorkout] = useState(null)
+	const [exercise, setExercise] = useState(null)
+	const [workoutList, setWorkoutList] = useState(null);
+	const [exerciseList, setExerciseList] = useState(null);
+	const [graphData, setGraphData] = useState({ x: [], y: [] })
 	
-	const getGraphData = () => {
+	const getGraphData = async () => {
 		// use start date, end date, workout, exercise to make request for all the data, then parse and format it
-		return { x: [1,3, 6], y: [5,7,1] };
+		if (workout == null || exercise == null) {
+			return;
+		}
+		const res = await axios.get('https://gym-tracker-mas.herokuapp.com/api/users/1/workouts/1/exercises/1/logs/?startDate=' + startDate + '&endDate=' + endDate);
+		const y = res.data.map( log => log.weight );
+		const x = res.data.map( log => log.date );
+		setGraphData( { x: x, y: y } );
 	};
 	
-	const getWorkouts = () => {
+	const getWorkouts = async () => {
 		// make request and parse data to store ids in workout list
-		return ['workout1', 'workout2', 'workout3'];
+		if (workoutList == null)	{
+			const res = await axios.get('https://gym-tracker-mas.herokuapp.com/api/users/1/workouts/');
+			setWorkoutList(res.data);
+		}
 	};
 
-	const getExercises = () => {
+	const getExercises = async () => {
 		// make request and parse data to store ids in exercise list
-		return ['exercise1', 'exercise2', 'exercise3'];
+		if (workout == null) {
+			setExerciseList(['Please Choose a Workout']);
+		} else if (exerciseList == null) {
+			const res = await axios.get('https://gym-tracker-mas.herokuapp.com/api/users/1/workouts/' + workout.toString() + 'exercises/');
+			setExerciseList(res.data);
+		}
 	};
+
+	useEffect(() => {
+		getGraphData();
+		getWorkouts();
+		getExercises();
+	});
 
 	return (
 		<View>
-			<Graph props={getGraphData()}/>
+			<Graph props={graphData}/>
 			<Text> Workouts </Text>
 			<SelectDropdown
-				data={ getWorkouts() }
+				data={ workoutList == null ? [] : workoutList.map(workout => workout.name) }
 				onSelect={(selectedItem, index) => {
-					setWorkout(workoutList[index]);
+					setWorkout(workoutList[index].id);
+					setExerciseList(null);
 				}}
 				defaultButtonText="Select Workout"
 			/>
 			<Text> Exercises </Text>
 			<SelectDropdown
-				data={ getExercises() }
+				data={exerciseList == null ? [] : exerciseList.map(exercise => exercise.name) }
 				onSelect={(selectedItem, index) => {
-					setExercise(exerciseList[index]);
+					setExercise(exerciseList[index].id);
 				}}
 				defaultButtonText="Select Exercise"
 			/>
