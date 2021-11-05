@@ -6,21 +6,45 @@ import DatePicker from 'react-native-datepicker';
 import axios from 'axios';
 
 const Graph = (props) => {
-	const [graphData, setGraphData] = useState(props.props);
-	// console.log(graphData);
-	const lineData = {
-		labels: graphData.x,
-		datasets: [
-			{
-				data: graphData.y,
-			},
-		],
+	const [graphData, setGraphData] = useState({ x : [], y : []});
+	const [change, setChange] = useState(true);
+	console.log(props);
+
+	const getGraphData = async () => {
+		// use start date, end date, workout, exercise to make request for all the data, then parse and format it
+		console.log(change);
+		if (props.workout == null || props.exercise == null) {
+			return;
+		}
+		const res = await axios.get('https://gym-tracker-mas.herokuapp.com/api/users/1/workouts/' + props.workout.toString() + '/exercises/' + props.exercise.toString() + '/logs/?startDate=' + props.startDate + '&endDate=' + props.endDate);
+		const y = res.data.map( log => log.weight );
+		const x = res.data.map( log => log.date.split('T')[0]);
+		setGraphData( { x: x, y: y } );
+		setChange(false);
+		console.log(graphData.x);
 	};
+
+	const lineDataFormat = () => {
+		return ({
+			labels: graphData.x,
+			datasets: [
+				{
+					data: graphData.y,
+				},
+			],
+		});
+	};
+
+	useEffect(() => {
+		getGraphData();
+	},
+	[props.workout, props.exercise, props.startDate, props.endDate]);
+	
 	return  (
 		<View>
 			{ graphData.x.length != 0 ?
 			<LineChart
-			data={lineData}
+			data={lineDataFormat()}
 			width={Dimensions.get('window').width} // from react-native
 			height={220}
 			yAxisSuffix='lb'
@@ -52,52 +76,47 @@ const VisualizeLogs = (props) => {
 	const [exercise, setExercise] = useState(null)
 	const [workoutList, setWorkoutList] = useState(null);
 	const [exerciseList, setExerciseList] = useState(null);
-	const [graphData, setGraphData] = useState({ x: [], y: [] })
+	const [change, setChange] = useState(false);
 	
-	const getGraphData = async () => {
-		// use start date, end date, workout, exercise to make request for all the data, then parse and format it
-		if (workout == null || exercise == null) {
-			return;
-		}
-		const res = await axios.get('https://gym-tracker-mas.herokuapp.com/api/users/1/workouts/1/exercises/1/logs/?startDate=' + startDate + '&endDate=' + endDate);
-		const y = res.data.map( log => log.weight );
-		const x = res.data.map( log => log.date );
-		setGraphData( { x: x, y: y } );
-	};
 	
 	const getWorkouts = async () => {
 		// make request and parse data to store ids in workout list
-		if (workoutList == null)	{
+		if (workoutList == null)  {
 			const res = await axios.get('https://gym-tracker-mas.herokuapp.com/api/users/1/workouts/');
 			setWorkoutList(res.data);
+			console.log(res.data);
 		}
+		console.log("workouts: " + workoutList);
 	};
 
 	const getExercises = async () => {
 		// make request and parse data to store ids in exercise list
-		if (workout == null) {
+		if (exerciseList == null) {
+			console.log('here');
 			setExerciseList(['Please Choose a Workout']);
-		} else if (exerciseList == null) {
-			const res = await axios.get('https://gym-tracker-mas.herokuapp.com/api/users/1/workouts/' + workout.toString() + 'exercises/');
+		} else if (workout != null && change) {
+			const res = await axios.get('https://gym-tracker-mas.herokuapp.com/api/users/1/workouts/' + workout.toString() + '/exercises/');
 			setExerciseList(res.data);
+			setChange(false);
 		}
+		console.log("exercises: " + exerciseList);
 	};
 
 	useEffect(() => {
-		getGraphData();
 		getWorkouts();
 		getExercises();
 	});
 
 	return (
 		<View>
-			<Graph props={graphData}/>
+			<Graph exercise={exercise} workout={workout} startDate={startDate} endDate={endDate}/>
 			<Text> Workouts </Text>
 			<SelectDropdown
-				data={ workoutList == null ? [] : workoutList.map(workout => workout.name) }
+				data={ workoutList == null ? ['No Workouts Present'] : workoutList.map(workout => workout.name) }
 				onSelect={(selectedItem, index) => {
 					setWorkout(workoutList[index].id);
 					setExerciseList(null);
+					setChange(true);
 				}}
 				defaultButtonText="Select Workout"
 			/>
