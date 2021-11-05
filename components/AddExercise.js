@@ -1,7 +1,8 @@
+import { useLinkProps } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity } from 'react-native';
 
-export default function AddExercise() {
+export default function AddExercise(props) {
     const [exercise, setExercise] = useState("");
     const [sets, setSets] = useState("");
     const [reps, setReps] = useState("");
@@ -44,7 +45,17 @@ export default function AddExercise() {
               onChangeText={text => setNotes(text)} />
           </View>
 
-        <TouchableOpacity> 
+        <TouchableOpacity
+        onPress={() => {
+            const data = {id: Math.random().toString(),
+                title: exercise,
+                sets: sets,
+                reps: reps,
+                weight: weight,
+                notes: notes
+            }
+            props.navigation.navigate("StartWorkout", {data})
+        }} > 
             <View style = {styles.submit}>
                 <Text style = {{fontSize: 25, textAlign: 'center', }}> Submit </Text>
             </View>

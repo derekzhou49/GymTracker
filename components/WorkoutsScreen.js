@@ -1,23 +1,34 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, SafeAreaView, FlatList } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, SafeAreaView, FlatList, Alert } from 'react-native';
 
 function WorkoutsScreen(props) {
     const onPressHandler = () => {
       props.navigation.navigate("StartWorkout")
     }
 
-    const [enteredWorkout, setEnteredWorkout] = useState('');
-    const [workouts, setWorkouts] = useState([{id: Math.random().toString(), value: "Chest and Triceps"}, {id: Math.random().toString(), value: "Back and Biceps"}, {id: Math.random().toString(), value: "Legs and Shoulders"}]);
+    const workoutData = [
+      {id: Math.random().toString(), value: "Chest and Triceps"},
+      {id: Math.random().toString(), value: "Back and Biceps"},
+      {id: Math.random().toString(), value: "Legs and Shoulders"}];
+    const [enteredWorkout, setEnteredWorkout] = useState("");
+    const [workouts, setWorkouts] = useState(workoutData);
     
     const workoutInputHandler = enteredText => {
         setEnteredWorkout(enteredText);
     };
 
     const addWorkoutHandler = () => {
-        setWorkouts(currentWorkouts => [
-        ...currentWorkouts,
-        { id: Math.random().toString(), value: enteredWorkout }
-        ]);
+        let add = false
+        const options = [
+          {text: "Yes", onPress: () => {
+            setWorkouts(currentWorkouts => [
+              ...currentWorkouts,
+              { id: Math.random().toString(), value: enteredWorkout }
+              ]);
+          }},
+          {text: "No", style: "cancel"}
+        ]
+        Alert.alert("Confirm", `Are you sure you want to add the workout "${enteredWorkout}"?`, options)
     };
 
   return (
@@ -25,16 +36,18 @@ function WorkoutsScreen(props) {
       <View style={styles.title}>
         <Text style={{ fontSize: 40, }}> Dane's Workouts </Text>
       </View>
-      {/* <View>
-        <Text style={{ fontSize: 20, }}> Test</Text>
+      <View>
+        <Text style={{ fontSize: 20, textAlign: "center" }}> Add a New Workout</Text>
         <TextInput
-            placeholder="New Workout"
+            placeholder="Workout Name"
             style={styles.input}
             onChangeText={workoutInputHandler}
             value={enteredWorkout}
         />
-        <Button title="Test Add" onPress={addWorkoutHandler} />
-        </View> */}
+        <Button
+        title="Add Workout"
+        onPress={addWorkoutHandler} />
+        </View>
       <FlatList 
       keyExtractor = {(item, index) => item.id}
       data = {workouts}
@@ -74,6 +87,7 @@ const styles = StyleSheet.create({
   input: {
     borderBottomColor: 'black',
     borderBottomWidth: 1,
+    marginHorizontal: 40
   },
   newWorkout: {
     padding: 20,
