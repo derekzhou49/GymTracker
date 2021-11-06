@@ -1,25 +1,27 @@
 import 'react-native-gesture-handler';
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, } from 'react-native';
-import WelcomeScreen from './components/WelcomeScreen';
-import WorkoutChecklist from './components/WorkoutChecklist';
-import WorkoutsScreen from './components/WorkoutsScreen';
-import StartWorkout from './components/StartWorkout';
-import AddExercise from './components/AddExercise';
-import VisualizeLogs from './components/VisualizeLogs';
-import HomeScreen from './components/HomeScreen';
+import WelcomeScreen from './WelcomeScreen';
+import WorkoutChecklist from './WorkoutChecklist';
+import WorkoutsScreen from './WorkoutsScreen';
+import StartWorkout from './StartWorkout';
+import AddExercise from './AddExercise';
+import VisualizeLogs from './VisualizeLogs';
+import HomeScreen from './HomeScreen';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import MainContainer from './components/MainContainer';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 const WorkoutStackNavigator = () => {
   return(
-      <Stack.Navigator>
+      <Stack.Navigator
+      screenOptions = {{
+        headerShown: false,
+      }}>
         <Stack.Screen
         name="WorkoutsScreen"
         component={WorkoutsScreen} />
@@ -43,22 +45,9 @@ const WorkoutStackNavigator = () => {
   )
 }
 
-export default function App() {
+export default function MainContainer() {
   return(
-    <NavigationContainer>
-      <Stack.Navigator
-      screenOptions = {{
-        headerShown: false,
-      }}>
-        <Stack.Screen
-        name="WelcomeScreen"
-        component={WelcomeScreen} />
-
-        <Stack.Screen
-        name="MainContainer"
-        component={MainContainer} />
-      </Stack.Navigator>
-      {/* <Tab.Navigator
+      <Tab.Navigator
       screenOptions = {({ route }) => ({
         tabBarIcon: ({focused, color, size}) => {
           let iconName;
@@ -78,8 +67,7 @@ export default function App() {
         <Tab.Screen name = "Workouts" component={WorkoutStackNavigator} />
         <Tab.Screen name = "Temp" component = {WelcomeScreen} />
         <Tab.Screen name = "Progress" component = {VisualizeLogs} />
-      </Tab.Navigator> */}
-    </NavigationContainer>
+      </Tab.Navigator>
   );
 }
 
