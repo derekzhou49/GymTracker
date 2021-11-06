@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity } from 'react-native';
-import WorkoutsScreen from './WorkoutsScreen';
 
 // function GoWorkoutsScreen({ navigation }) {
 //   const onPressHandler = () => {
@@ -8,12 +7,13 @@ import WorkoutsScreen from './WorkoutsScreen';
 //   }
 // }
 
+
 function WelcomeScreen(props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const onPressHandler = () => {
-    props.navigation.navigate("WorkoutsScreen");
+    props.navigation.replace('MainContainer');
   }
 
   return (
