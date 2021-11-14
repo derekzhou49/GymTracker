@@ -7,7 +7,8 @@ function HomeScreen(props) {
   return (
     <SafeAreaView style={styles.screen}>
       <View style={styles.title}>
-        <Text style={{ fontSize: 30}}> Welcome Back, Dane! </Text>
+      <Text style={{ fontSize: 60, color: "#2162C2"}}> Dane </Text>
+        <Text style={{ fontSize: 30, color: "#2162C2"}}> Welcome Back! </Text>
       </View>
     </SafeAreaView>
   );

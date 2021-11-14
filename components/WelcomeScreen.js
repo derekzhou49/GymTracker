@@ -19,34 +19,33 @@ function WelcomeScreen(props) {
   return (
     <View style={styles.screen}>
       <View style={styles.title}>
-        <Text style={{ fontSize: 40, }}> Welcome to GymTracker! </Text>
+        <Text style={{ fontSize: 40, color: '#2162C2'}}> GymTracker </Text>
       </View>
-      <View style={{ padding: 30, }}>
-        <Text> Username or Email </Text>
+      <View style = {{paddingBottom: 30, paddingTop: 50,}}>
         <TextInput
-        placeholder="johndoe@example.com"
+        placeholder="Username"
         style={styles.input}
         onChangeText={text => setUsername(text)}/>
       </View>
-      <View style={{ padding: 30, }}>
-        <Text> Password </Text>
+      <View style = {{paddingBottom: 30, fontSize: 50,}}>
         <TextInput
-        placeholder="Must have at least 5 characters" 
+        placeholder="Password" 
         style={styles.input}
         onChangeText={text => setPassword(text)} />
       </View>
       <TouchableOpacity>
-        <View style={{ padding: 30, }}>
+        <View style={styles.buttonView}>
           <Button
           style={{ padding: 10, fontSize: 20 }}
-          title="Sign In"
+          title= "Sign In"
+          color= {'white'}
           // for debugging 
           onPress={onPressHandler} />
         </View>
       </TouchableOpacity>
       <TouchableOpacity>
-        <View style={{ padding: 30, }}>
-          <Button style={{ padding: 10, fontSize: 20 }} title="Create an Accounnt" />
+        <View style = {styles.buttonView}>
+          <Button style={{ padding: 10, fontSize: 20}} title = "Create an Account" color = {'white'} />
         </View>
       </TouchableOpacity>
     </View>
@@ -62,9 +61,23 @@ const styles = StyleSheet.create({
     padding: 30,
   },
   input: {
-    borderBottomColor: 'black',
-    borderBottomWidth: 1,
-  }
+    borderColor: '#2162C2',
+    borderWidth: 2,
+    borderRadius: 25,
+    height: 50,
+    textAlign: 'center',
+    fontSize: 20,
+  },
+  buttonView: {
+    padding: 5,
+    marginVertical: 20,
+    backgroundColor: '#2162C2',
+    borderColor: 'black',
+    borderRadius: 25,
+    marginLeft: 30,
+    marginRight: 30,
+    color: 'white',
+  },
 });
 
 export default WelcomeScreen;
