@@ -80,17 +80,17 @@ function StartWorkout(props) {
       renderItem = {renderItem}
       />
       <TouchableOpacity> 
-          <View style = {styles.newWorkout}>
+          <View style = {styles.buttons}>
             <TouchableOpacity
             onPress={onPressHandler}>
-              <Text style = {{fontSize: 25, textAlign: 'center', }}> Start Workout </Text>
+              <Text style = {{fontSize: 25, textAlign: 'center', color: 'white'}}> Start Workout </Text>
             </TouchableOpacity>
           </View>
         </TouchableOpacity>  
         <TouchableOpacity
         onPress={() => props.navigation.navigate("AddExercise")}> 
-          <View style = {styles.newWorkout}>
-            <Text style = {{fontSize: 25, textAlign: 'center', }}> Add Exercise </Text>
+          <View style = {styles.buttons}>
+            <Text style = {{fontSize: 25, textAlign: 'center', color: 'white'}}> Add Exercise </Text>
           </View>
         </TouchableOpacity>  
     </SafeAreaView>
@@ -110,16 +110,20 @@ const styles = StyleSheet.create({
   workoutItem: {
     padding: 10,
     marginVertical: 10,
-    backgroundColor: '#ccc',
-    borderColor: 'black',
+    backgroundColor: 'white',
+    borderColor: '#2162C2',
+    borderWidth: 5,
     borderRadius: 25,
     flex: .5,
+    margin: 20,
   },
-  newWorkout: {
-    padding: 20,
-    marginVertical: 10,
-    backgroundColor: 'pink',
+  buttons: {
+    padding: 10,
+    marginVertical: 20,
+    backgroundColor: '#2162C2',
     borderColor: 'black',
     borderRadius: 25,
+    marginLeft: 30,
+    marginRight: 30,
   },
 });

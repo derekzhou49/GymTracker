@@ -49,9 +49,15 @@ export default function MainContainer() {
   return(
       <Tab.Navigator
       screenOptions = {({ route }) => ({
+        tabBarStyle: {position: 'absolute', backgroundColor: '#2162C2'},
+        tabBarInactiveBackgroundColor: '#2162C2',
+        tabBarActiveBackgroundColor: '#2162C2',
+        tabBarActiveTintColor: 'white',
+        tabBarInactiveTintColor: 'black',
         tabBarIcon: ({focused, color, size}) => {
           let iconName;
           if (route.name == 'Home') {
+            
             iconName = focused ? 'home' : 'home-outline';
           } else if (route.name == 'Workouts') {
             iconName = focused ? 'barbell' : 'barbell-outline';
