@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity } from 'react-native';
+import axios from 'axios'
 
 // function GoWorkoutsScreen({ navigation }) {
 //   const onPressHandler = () => {
@@ -7,13 +8,39 @@ import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity } from 'rea
 //   }
 // }
 
+var myID = "";
+
 
 function WelcomeScreen(props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const onPressHandler = () => {
-    props.navigation.replace('MainContainer');
+  const loginOnPressHandler = () => {
+    axios.post('https://gym-tracker-mas.herokuapp.com/auth/login', {
+        email: username,
+        password: password,
+    })
+    .then((response) => {
+      console.log(response.data);
+      myID = response.data.id;
+      console.log(response.data.id);
+      props.navigation.replace('MainContainer');
+    }, (error) => {
+      console.log(error);
+    });
+  }
+
+  const registerOnPressHandler = () => {
+    axios.post('https://gym-tracker-mas.herokuapp.com/auth/register', {
+        email: username,
+        name: username,
+        password: password,
+    })
+    .then((response) => {
+      console.log(response.data);
+    }, (error) => {
+      console.log(error);
+    });
   }
 
   return (
@@ -40,12 +67,16 @@ function WelcomeScreen(props) {
           title= "Sign In"
           color= {'white'}
           // for debugging 
-          onPress={onPressHandler} />
+          onPress={loginOnPressHandler} />
         </View>
       </TouchableOpacity>
       <TouchableOpacity>
         <View style = {styles.buttonView}>
-          <Button style={{ padding: 10, fontSize: 20}} title = "Create an Account" color = {'white'} />
+          <Button 
+          style={{ padding: 10, fontSize: 20}} 
+          title = "Create an Account" 
+          color = {'white'} 
+          onPress={registerOnPressHandler} />
         </View>
       </TouchableOpacity>
     </View>
