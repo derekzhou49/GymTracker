@@ -52,7 +52,7 @@ function StartWorkout(props) {
   const [exercises, setExercises] = useState(DATA1[workoutID].workout);
     
   const onPressHandler = () => {
-    props.navigation.navigate("WorkoutChecklist");
+    props.navigation.navigate("WorkoutChecklist", {workout: exercises, workoutName: params.workoutName});
   }
   
 
