@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Alert, Dimensions, StyleSheet, Text, View, TextInput, Button, TouchableOpacity, SafeAreaView, FlatList } from 'react-native';
+import { Alert, Dimensions, StyleSheet, Text, View, TextInput, Button, TouchableOpacity, SafeAreaView, FlatList, Modal, Pressable } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
 import SelectDropdown from 'react-native-select-dropdown';
 import DatePicker from 'react-native-datepicker';
 import axios from 'axios';
 
 const Graph = (props) => {
-	const [graphData, setGraphData] = useState({ x : [], y : []});
+	const [graphData, setGraphData] = useState({ x : [], y : [], data: []});
 	const [change, setChange] = useState(true);
-	console.log(props);
+	const [popup, setPopup] = useState(false);
+	const [popupContent, setPopupContent] = useState("");
+	console.log("this is popupContent");
+	console.log(popupContent);
+
 
 	const getGraphData = async () => {
 		// use start date, end date, workout, exercise to make request for all the data, then parse and format it
@@ -19,10 +23,28 @@ const Graph = (props) => {
 		const res = await axios.get('https://gym-tracker-mas.herokuapp.com/api/users/1/workouts/' + props.workout.toString() + '/exercises/' + props.exercise.toString() + '/logs/?startDate=' + props.startDate + '&endDate=' + props.endDate);
 		const y = res.data.map( log => log.weight );
 		const x = res.data.map( log => log.date.split('T')[0]);
-		setGraphData( { x: x, y: y } );
+		setGraphData( { x: x, y: y, data: res.data } );
 		setChange(false);
-		console.log(graphData.x);
+		console.log("current graph data state");
+		console.log(graphData);
 	};
+
+	const dataClick = (index) => {
+		console.log("this index was clicked: " + index);
+		setPopup(true);
+		const datapoint = graphData.data[index]
+		console.log("this is the datapoint");
+		console.log(datapoint);
+		// setPopupContent("hello")
+		setPopupContent("Weight: " + datapoint.weight + "\nReps: " + datapoint.reps + "\nSets: " + datapoint.sets + "\nNotes: " + datapoint.notes + "\nDate: " + graphData.x[index]);
+		console.log(popupContent)
+		
+	}
+
+	const exitPopup = () => {
+		setPopup(false);
+		setPopupContent("");
+	}
 
 	const lineDataFormat = () => {
 		return ({
@@ -43,27 +65,50 @@ const Graph = (props) => {
 	return  (
 		<View>
 			{ graphData.x.length != 0 ?
-			<LineChart
-			data={lineDataFormat()}
-			width={Dimensions.get('window').width} // from react-native
-			height={220}
-			yAxisSuffix='lb'
-			chartConfig={{
-			  backgroundColor: '#e26a00',
-			  backgroundGradientFrom: '#fb8c00',
-			  backgroundGradientTo: '#ffa726',
-			  decimalPlaces: 1, // optional, defaults to 2dp
-			  color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-			  style: {
-				borderRadius: 16
-			  }
-			}}
-			bezier
-			style={{
-			  marginVertical: 8,
-			  borderRadius: 16
-			}}
-			/> :
+			<>
+				<Modal
+					animationType="slide"
+					transparent={true}
+					visible={popup}
+					onRequestClose={() => {
+						exitPopup()
+					}}
+				>
+					<View style={styles.centeredView}>
+						<View style={styles.modalView}>
+							<Text>{ popupContent }</Text>
+							<Pressable
+							  style={[styles.button, styles.buttonClose]}
+							  onPress={() => exitPopup()}
+							>
+							  <Text>Close</Text>
+							</Pressable>
+						</View>
+					</View>
+				</Modal>
+				<LineChart
+				onDataPointClick={ ({index}) => dataClick(index) }
+				data={lineDataFormat()}
+				width={Dimensions.get('window').width} // from react-native
+				height={220}
+				yAxisSuffix='lb'
+				chartConfig={{
+				  backgroundColor: '#e26a00',
+				  backgroundGradientFrom: '#fb8c00',
+				  backgroundGradientTo: '#ffa726',
+				  decimalPlaces: 1, // optional, defaults to 2dp
+				  color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+				  style: {
+					borderRadius: 16
+				  }
+				}}
+				style={{
+				  marginVertical: 8,
+				  borderRadius: 16
+				}}
+				/> 
+			</>
+			:
 			<Text> No Data to display </Text> }
 		</View>
 	);
@@ -182,4 +227,49 @@ const VisualizeLogs = (props) => {
 		</View>
 	);
 }
+
+const styles = StyleSheet.create({
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center"
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center"
+  }
+});
+
 export default VisualizeLogs;
