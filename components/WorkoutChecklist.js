@@ -8,10 +8,13 @@ import { NavigationContainer, useLinkProps } from '@react-navigation/native';
 
 export default function WorkoutChecklist(props) {
     // Will fetch these from the server once connected to backend
+    let params = props.route.params;
+    // console.log(params);
     const workoutNum = 2;
     const workoutName = "Chest and Triceps";
     let exerciseData = [{name: "Bench Press", completed: false}, {name: "Iso Lateral Wide Chest", completed: false}, {name: "Chest Flys", completed: false}, {name: "Tricep Dips", completed: false}];
-    const [exercises, setExercises] = useState(exerciseData)
+    const [exercises, setExercises] = useState(params.workout);
+    console.log(exercises)
     const date = new Date();
 
     const displayIcon = (state) => {
@@ -33,8 +36,8 @@ export default function WorkoutChecklist(props) {
 
   return(
       <SafeAreaView>
-          <Text style = {{fontSize: 35, fontWeight: 'bold', textAlign: 'center'}}> Workout {workoutNum}</Text>
-          <Text style = {{fontSize: 20, fontWeight: 'bold', textAlign: 'center'}}> {workoutName}</Text>
+          <Text style = {{fontSize: 35, fontWeight: 'bold', textAlign: 'center'}}> Workout Checklist </Text>
+          <Text style = {{fontSize: 20, fontWeight: 'bold', textAlign: 'center'}}> {params.workoutName}</Text>
           <View style = {styles.checklist}>
               <Text style = {styles.date}>{date.getMonth() + 1}/{date.getDate()}/{date.getFullYear()}</Text>
               <FlatList
@@ -43,14 +46,18 @@ export default function WorkoutChecklist(props) {
                   return(
                       <View style = {{flexDirection:'row', paddingTop: 30, justifyContent: 'space-between'}}>
                           <View>
-                            <Text>{item.name}</Text>
+                              <TouchableOpacity
+                               onPress={() => props.navigation.navigate('AddExercise', {exercise: item})}>
+                                  <Text>{item.title}</Text>
+                              </TouchableOpacity>
                           </View>
                           <TouchableOpacity
                           onPress={() => {
-                              const idx = exercises.indexOf(item);
-                              let newExercises = [...exercises];
-                              newExercises.splice(idx, 1, {name: item.name, completed: !item.completed});
-                              setExercises(newExercises);
+                              console.log("Press Handler")
+                            //   const idx = exercises.indexOf(item);
+                            //   let newExercises = [...exercises];
+                            //   newExercises.splice(idx, 1, {name: item.name, completed: !item.completed});
+                            //   setExercises(newExercises);
                           }}>
                               <View style = {{alignItems: 'flex-end'}}>
                                 {displayIcon(item.completed)}
