@@ -6,8 +6,13 @@ export const useAuth = ()  => {
     return useContext(AuthContext);
 }
 
+/*
+TO USE: const {currentUser} = useAuth()
+Do this call similar to how useState is called
+*/
+
 const AuthProvider = ({children}) => {
-    const [currentUser, setCurrentUser] = useState({user: 'user'});
+    const [currentUser, setCurrentUser] = useState();
 
     const loginUser = async (email, password) => {
         // dummy code
