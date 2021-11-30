@@ -12,6 +12,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import LogWorkout from './LogWorkout';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -72,7 +73,7 @@ export default function MainContainer() {
       })}>
         <Tab.Screen name = "Home" component = {HomeScreen} />
         <Tab.Screen name = "Workouts" component={WorkoutStackNavigator} />
-        <Tab.Screen name = "Temp" component = {AddExercise} />
+        <Tab.Screen name = "Temp" component = {LogWorkout} />
         <Tab.Screen name = "Progress" component = {VisualizeLogs} />
       </Tab.Navigator>
   );

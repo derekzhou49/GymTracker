@@ -15,7 +15,7 @@ export default function AddExercise(props) {
         itemSets = props.route.params.exercise.sets;
         itemReps = props.route.params.exercise.reps;
         itemWeight = props.route.params.exercise.weight;
-        itemNotes = props.route.params.exercise.notes;
+        // itemNotes = props.route.params.exercise.notes;
     }
 
     const [exercise, setExercise] = useState(itemExercise);
@@ -23,9 +23,9 @@ export default function AddExercise(props) {
     // const [reps, setReps] = useState(itemReps);
     // const [weight, setWeight] = useState(itemWeight);
 
-    const [setsValue, setSetsValue] = useState(0);
-    const [repsValue, setRepsValue] = useState(0);
-    const [weightValue, setWeightValue] = useState(0);
+    const [setsValue, setSetsValue] = useState(itemSets);
+    const [repsValue, setRepsValue] = useState(itemReps);
+    const [weightValue, setWeightValue] = useState(itemWeight);
 
   return (
       <View style={styles.container}>
