@@ -49,6 +49,7 @@ export default function MainContainer() {
   return(
       <Tab.Navigator
       screenOptions = {({ route }) => ({
+        headerShown: false,
         tabBarStyle: {position: 'absolute', backgroundColor: '#2162C2'},
         tabBarInactiveBackgroundColor: '#2162C2',
         tabBarActiveBackgroundColor: '#2162C2',
@@ -71,7 +72,7 @@ export default function MainContainer() {
       })}>
         <Tab.Screen name = "Home" component = {HomeScreen} />
         <Tab.Screen name = "Workouts" component={WorkoutStackNavigator} />
-        <Tab.Screen name = "Temp" component = {WelcomeScreen} />
+        <Tab.Screen name = "Temp" component = {AddExercise} />
         <Tab.Screen name = "Progress" component = {VisualizeLogs} />
       </Tab.Navigator>
   );

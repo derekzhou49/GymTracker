@@ -69,13 +69,16 @@ function WelcomeScreen(props) {
       </View>
       <View style = {{paddingBottom: 30, paddingTop: 50,}}>
         <TextInput
-        placeholder="Username"
+        autoCapitalize='none'
+        placeholder="Enter Username"
         style={styles.input}
         onChangeText={text => setUsername(text)}/>
       </View>
       <View style = {{paddingBottom: 30, fontSize: 50,}}>
         <TextInput
-        placeholder="Password" 
+        autoCapitalize='none'
+        secureTextEntry = {true}
+        placeholder="Enter Password" 
         style={styles.input}
         onChangeText={text => setPassword(text)} />
       </View>
@@ -116,7 +119,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     height: 50,
     textAlign: 'center',
-    fontSize: 20,
+    fontSize: 15,
   },
   buttonView: {
     padding: 5,
