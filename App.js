@@ -14,6 +14,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MainContainer from './components/MainContainer';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
+import LoginStackNavigator from './components/LoginContainer';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -52,8 +53,8 @@ export default function App() {
         headerShown: false,
       }}>
         <Stack.Screen
-        name="WelcomeScreen"
-        component={WelcomeScreen} />
+        name="LoginContainer"
+        component={LoginStackNavigator} />
 
         <Stack.Screen
         name="MainContainer"
