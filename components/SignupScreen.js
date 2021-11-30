@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, Alert } from 'react-native';
 import axios from 'axios'
 
 
@@ -20,6 +20,13 @@ function SignupScreen(props) {
         }, (error) => {
             console.log(error);
         });
+        Alert.alert(
+          "Success!",
+          "Account Created",
+          [
+            { text: "OK", onPress: () => console.log("OK Pressed") }
+          ]
+        );
         props.navigation.navigate('WelcomeScreen')
     }
 
@@ -31,6 +38,7 @@ function SignupScreen(props) {
       <View style = {{paddingBottom: 30, paddingTop: 50,}}>
         <Text style={{ fontSize: 20, color: 'black', textAlign: 'center'}}> Email </Text>
         <TextInput
+        autoCapitalize='none'
         placeholder="Enter Email"
         style={styles.input}
         onChangeText={text => setEmail(text)}/>
@@ -38,6 +46,7 @@ function SignupScreen(props) {
       <View style = {{paddingBottom: 30}}>
         <Text style={{ fontSize: 20, color: 'black', textAlign: 'center'}}> Username </Text>
         <TextInput
+        autoCapitalize='none'
         placeholder="Enter Username"
         style={styles.input}
         onChangeText={text => setUsername(text)}/>
@@ -45,6 +54,7 @@ function SignupScreen(props) {
       <View style = {{paddingBottom: 30, fontSize: 50,}}>
         <Text style={{ fontSize: 20, color: 'black', textAlign: 'center'}}> Password </Text>
         <TextInput
+        autoCapitalize='none'
         placeholder="Enter Password" 
         style={styles.input}
         onChangeText={text => setPassword(text)} />
