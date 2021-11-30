@@ -55,6 +55,7 @@ function SignupScreen(props) {
         <Text style={{ fontSize: 20, color: 'black', textAlign: 'center'}}> Password </Text>
         <TextInput
         autoCapitalize='none'
+        
         placeholder="Enter Password" 
         style={styles.input}
         onChangeText={text => setPassword(text)} />

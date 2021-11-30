@@ -79,7 +79,7 @@ export default function WorkoutChecklist(props) {
           }}> 
             <View style = {styles.back}>
                 <Text 
-                style = {{fontSize: 25, textAlign: 'center', }}> Done </Text>
+                style = {{fontSize: 25, textAlign: 'center', color: 'white' }}> Done </Text>
             </View>
         </TouchableOpacity>  
       </SafeAreaView>
@@ -88,13 +88,15 @@ export default function WorkoutChecklist(props) {
 
 const styles = StyleSheet.create({
     container: {
-        fontSize: 35
+        fontSize: 35,
+        // backgroundColor: 'white',
     },
     checklist: {
         padding: 20,
         marginVertical: 10,
-        backgroundColor: 'lightgray',
-        borderColor: 'black',
+        backgroundColor: 'white',
+        borderColor: '#2162C2',
+        borderWidth: 5,
         borderRadius: 25,
         alignContent: 'space-between',
     },
@@ -104,10 +106,13 @@ const styles = StyleSheet.create({
         fontSize: 20,
     },
     back: {
-        padding: 20,
-        marginVertical: 10,
-        backgroundColor: 'pink',
+        padding: 10,
+        marginVertical: 20,
+        backgroundColor: '#2162C2',
         borderColor: 'black',
         borderRadius: 25,
+        marginLeft: 30,
+        marginRight: 30,
     }
+    
 });
