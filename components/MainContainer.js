@@ -41,7 +41,12 @@ const WorkoutStackNavigator = () => {
 
         <Stack.Screen
         name="AddExercise"
+
         component={AddExercise} />
+        <Stack.Screen
+        name="LogWorkout"
+        component={LogWorkout} />
+
       </Stack.Navigator>
   )
 }

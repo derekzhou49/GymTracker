@@ -47,7 +47,7 @@ export default function WorkoutChecklist(props) {
                       <View style = {{flexDirection:'row', paddingTop: 30, justifyContent: 'space-between'}}>
                           <View>
                               <TouchableOpacity
-                               onPress={() => props.navigation.navigate('AddExercise', {exercise: item})}>
+                               onPress={() => props.navigation.navigate('LogWorkout', {exercise: item})}>
                                   <Text>{item.title}</Text>
                               </TouchableOpacity>
                           </View>
