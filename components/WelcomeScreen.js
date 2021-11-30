@@ -70,6 +70,7 @@ function WelcomeScreen(props) {
       <View style = {{paddingBottom: 30, paddingTop: 50,}}>
         <TextInput
         autoCapitalize='none'
+        autoCorrect = {false}
         placeholder="Enter Username"
         style={styles.input}
         onChangeText={text => setUsername(text)}/>
@@ -77,6 +78,7 @@ function WelcomeScreen(props) {
       <View style = {{paddingBottom: 30, fontSize: 50,}}>
         <TextInput
         autoCapitalize='none'
+        autoCorrect = {false}
         secureTextEntry = {true}
         placeholder="Enter Password" 
         style={styles.input}

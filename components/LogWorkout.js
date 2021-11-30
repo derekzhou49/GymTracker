@@ -107,7 +107,7 @@ export default function LogWorkout(props) {
                     placeholder = "Sleep, Calories, Difficulty, ... etc" 
                     multiline = {true}
                     style = {styles.notesInput}
-                    onChangeText={notes => setPassword(setNotes)}
+                    onChangeText={notes => setNotes(notes)}
                     />
 
                     </View>
