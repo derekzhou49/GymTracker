@@ -14,6 +14,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MainContainer from './components/MainContainer';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
+import AuthProvider from './contexts/AuthContext';
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -47,39 +49,41 @@ const WorkoutStackNavigator = () => {
 export default function App() {
   return(
     <NavigationContainer>
-      <Stack.Navigator
-      screenOptions = {{
-        headerShown: false,
-      }}>
-        <Stack.Screen
-        name="WelcomeScreen"
-        component={WelcomeScreen} />
+      <AuthProvider>
+        <Stack.Navigator
+        screenOptions = {{
+          headerShown: false,
+        }}>
+          <Stack.Screen
+          name="WelcomeScreen"
+          component={WelcomeScreen} />
 
-        <Stack.Screen
-        name="MainContainer"
-        component={MainContainer} />
-      </Stack.Navigator>
-      {/* <Tab.Navigator
-      screenOptions = {({ route }) => ({
-        tabBarIcon: ({focused, color, size}) => {
-          let iconName;
-          if (route.name == 'Home') {
-            iconName = focused ? 'home' : 'home-outline';
-          } else if (route.name == 'Workouts') {
-            iconName = focused ? 'barbell' : 'barbell-outline';
-          } else if (route.name == 'Temp') {
-            iconName = focused ? 'ios-list' : 'ios-list';
-          } else if (route.name == 'Progress') {
-            iconName = focused ? 'trending-up' : 'trending-up-outline';
-          }
-          return <Ionicons name = {iconName} size = {size} color = {color}/>;
-        },
-      })}>
-        <Tab.Screen name = "Home" component = {HomeScreen} />
-        <Tab.Screen name = "Workouts" component={WorkoutStackNavigator} />
-        <Tab.Screen name = "Temp" component = {WelcomeScreen} />
-        <Tab.Screen name = "Progress" component = {VisualizeLogs} />
-      </Tab.Navigator> */}
+          <Stack.Screen
+          name="MainContainer"
+          component={MainContainer} />
+        </Stack.Navigator>
+        {/* <Tab.Navigator
+        screenOptions = {({ route }) => ({
+          tabBarIcon: ({focused, color, size}) => {
+            let iconName;
+            if (route.name == 'Home') {
+              iconName = focused ? 'home' : 'home-outline';
+            } else if (route.name == 'Workouts') {
+              iconName = focused ? 'barbell' : 'barbell-outline';
+            } else if (route.name == 'Temp') {
+              iconName = focused ? 'ios-list' : 'ios-list';
+            } else if (route.name == 'Progress') {
+              iconName = focused ? 'trending-up' : 'trending-up-outline';
+            }
+            return <Ionicons name = {iconName} size = {size} color = {color}/>;
+          },
+        })}>
+          <Tab.Screen name = "Home" component = {HomeScreen} />
+          <Tab.Screen name = "Workouts" component={WorkoutStackNavigator} />
+          <Tab.Screen name = "Temp" component = {WelcomeScreen} />
+          <Tab.Screen name = "Progress" component = {VisualizeLogs} />
+        </Tab.Navigator> */}
+      </AuthProvider>
     </NavigationContainer>
   );
 }
