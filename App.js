@@ -15,7 +15,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MainContainer from './components/MainContainer';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import AuthProvider from './contexts/AuthContext';
-
+import LoginStackNavigator from './components/LoginContainer';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -50,13 +50,13 @@ export default function App() {
   return(
     <NavigationContainer>
       <AuthProvider>
-        <Stack.Navigator
-        screenOptions = {{
-          headerShown: false,
-        }}>
-          <Stack.Screen
-          name="WelcomeScreen"
-          component={WelcomeScreen} />
+      <Stack.Navigator
+      screenOptions = {{
+        headerShown: false,
+      }}>
+        <Stack.Screen
+        name="LoginContainer"
+        component={LoginStackNavigator} />
 
           <Stack.Screen
           name="MainContainer"
