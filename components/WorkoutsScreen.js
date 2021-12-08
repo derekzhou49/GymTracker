@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, FlatList, Alert, Modal } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import {CHEST_TRI, BACK_BI, LEG_SHOULDER } from './../testing/data';
 import { useAuth } from '../contexts/AuthContext';
+import axios from 'axios';
 
 function WorkoutsScreen(props) {
     const onPressHandler = () => {
@@ -22,9 +23,20 @@ function WorkoutsScreen(props) {
       {id: '3', value: "Legs and Shoulders"}];
       
     const [enteredWorkout, setEnteredWorkout] = useState("");
-    const [workouts, setWorkouts] = useState(workoutData);
+    const [workouts, setWorkouts] = useState([]);
     const [userId, setUserId] = useAuth();
     
+	useEffect(() => {
+		getWorkouts()
+	}, [props]);
+
+	async function getWorkouts() {
+		console.log("getting workout data");
+		const { data } = await axios.get('https://gym-tracker-mas.herokuapp.com/api/users/' + userId.toString() + '/workouts/');
+		console.log(data);
+		const workoutList = data.map((element, index) => { return({id: index + 1, value: element.name, workoutId: element.id}) });
+		setWorkouts(workoutList);
+	}
     const workoutInputHandler = enteredText => {
         setEnteredWorkout(enteredText);
     };
