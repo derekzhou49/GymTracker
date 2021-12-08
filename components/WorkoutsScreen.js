@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, FlatList, 
 import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import {CHEST_TRI, BACK_BI, LEG_SHOULDER } from './../testing/data';
+import { useAuth } from '../contexts/AuthContext';
 
 function WorkoutsScreen(props) {
     const onPressHandler = () => {
@@ -22,6 +23,7 @@ function WorkoutsScreen(props) {
       
     const [enteredWorkout, setEnteredWorkout] = useState("");
     const [workouts, setWorkouts] = useState(workoutData);
+    const [userId, setUserId] = useAuth();
     
     const workoutInputHandler = enteredText => {
         setEnteredWorkout(enteredText);
@@ -46,6 +48,8 @@ function WorkoutsScreen(props) {
         setEnteredWorkout("");
         toggleModalVisibility();
     };
+
+    console.log(`current user id is ${userId}`);
 
   return (
     <SafeAreaView style={styles.screen} >
