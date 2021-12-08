@@ -14,25 +14,25 @@ Do this call similar to how useState is called
 const AuthProvider = ({children}) => {
     const [currentUser, setCurrentUser] = useState();
 
-    const loginUser = async (email, password) => {
-        // dummy code
-        const user = {email, password};
-        setCurrentUser(user);
-    };
+    // const loginUser = async (email, password) => {
+    //     // dummy code
+    //     const user = {email, password};
+    //     setCurrentUser(user);
+    // };
 
-    const logoutUser = async () => {
-        // dummy code
-        setCurrentUser(null);
-    }
+    // const logoutUser = async () => {
+    //     // dummy code
+    //     setCurrentUser(null);
+    // }
 
-    const value = {
-        currentUser,
-        loginUser,
-        logoutUser
-    };
+    // const value = {
+    //     currentUser,
+    //     loginUser,
+    //     logoutUser
+    // };
 
     return (
-        <AuthContext.Provider value={value}>
+        <AuthContext.Provider value={[currentUser, setCurrentUser]}>
             {children}
         </AuthContext.Provider>
     );
