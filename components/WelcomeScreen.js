@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity } from 'react-native';
 import axios from 'axios'
 import { useAuth } from '../contexts/AuthContext';
+import { useCardAnimation } from '@react-navigation/stack';
 
 // function GoWorkoutsScreen({ navigation }) {
 //   const onPressHandler = () => {
@@ -15,6 +16,7 @@ var myID = "";
 function WelcomeScreen(props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [uerId, setUserId] = useAuth();
 
   const loginOnPressHandler = () => {
     axios.post('https://gym-tracker-mas.herokuapp.com/auth/login', {
@@ -22,6 +24,7 @@ function WelcomeScreen(props) {
         password: password,
     })
     .then((response) => {
+      setUserId(response.data.id);
       console.log(response.data);
       myID = response.data.id;
       console.log(response.data.id);
