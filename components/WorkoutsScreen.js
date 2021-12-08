@@ -15,13 +15,8 @@ function WorkoutsScreen(props) {
 
     const toggleModalVisibility = () => {
       setModalVisible(!isModalVisible);
-  };
+	};
 
-    const workoutData = [
-      {id: '1', value: "Chest and Triceps"},
-      {id: '2', value: "Back and Biceps"},
-      {id: '3', value: "Legs and Shoulders"}];
-      
     const [enteredWorkout, setEnteredWorkout] = useState("");
     const [workouts, setWorkouts] = useState([]);
     const [userId, setUserId] = useAuth();
@@ -37,49 +32,23 @@ function WorkoutsScreen(props) {
 		const workoutList = data.map((element, index) => { return({id: index + 1, value: element.name, workoutId: element.id}) });
 		setWorkouts(workoutList);
 	}
+
     const workoutInputHandler = enteredText => {
         setEnteredWorkout(enteredText);
     };
 
-    const addWorkoutHandler = () => {
-        // let add = false
-        // const options = [
-        //   {text: "Yes", onPress: () => {
-        //     setWorkouts(currentWorkouts => [
-        //       ...currentWorkouts,
-        //       { id: workoutData.length + 1, value: enteredWorkout }
-        //       ]);
-        //   }},
-        //   {text: "No", style: "cancel"}
-        // ]
-        // Alert.alert("Confirm", `Are you sure you want to add the workout "${enteredWorkout}"?`, options)
-        setWorkouts(currentWorkouts => [
-                ...currentWorkouts,
-                { id: workoutData.length + 1, value: enteredWorkout }
-                ]);
+    const addWorkoutHandler = async () => {
+		const { data } = await axios.post('https://gym-tracker-mas.herokuapp.com/api/users/' + userId.toString() + '/workouts/', {name: enteredWorkout});
+		getWorkouts();
         setEnteredWorkout("");
         toggleModalVisibility();
     };
-
-    console.log(`current user id is ${userId}`);
 
   return (
     <SafeAreaView style={styles.screen} >
       <View style={styles.title}>
         <Text style={{ fontSize: 40, fontWeight: 'bold'}}> Workouts </Text>
       </View>
-      {/* <View>
-        <Text style={{ fontSize: 20, textAlign: "center" }}> Add a New Workout</Text>
-        <TextInput
-            placeholder="Workout Name"
-            style={styles.input}
-            onChangeText={workoutInputHandler}
-            value={enteredWorkout}
-        />
-        <Button
-        title="Add Workout"
-        onPress={addWorkoutHandler} />
-        </View> */}
       <View style = {{maxHeight: 450,}}>
       <FlatList
       initialNumToRender = {2}
