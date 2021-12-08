@@ -12,6 +12,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import LogWorkout from './LogWorkout';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -40,7 +41,12 @@ const WorkoutStackNavigator = () => {
 
         <Stack.Screen
         name="AddExercise"
+
         component={AddExercise} />
+        <Stack.Screen
+        name="LogWorkout"
+        component={LogWorkout} />
+
       </Stack.Navigator>
   )
 }
@@ -49,6 +55,7 @@ export default function MainContainer() {
   return(
       <Tab.Navigator
       screenOptions = {({ route }) => ({
+        headerShown: false,
         tabBarStyle: {position: 'absolute', backgroundColor: '#2162C2'},
         tabBarInactiveBackgroundColor: '#2162C2',
         tabBarActiveBackgroundColor: '#2162C2',
@@ -71,7 +78,7 @@ export default function MainContainer() {
       })}>
         <Tab.Screen name = "Home" component = {HomeScreen} />
         <Tab.Screen name = "Workouts" component={WorkoutStackNavigator} />
-        <Tab.Screen name = "Temp" component = {WelcomeScreen} />
+        <Tab.Screen name = "Temp" component = {LogWorkout} />
         <Tab.Screen name = "Progress" component = {VisualizeLogs} />
       </Tab.Navigator>
   );

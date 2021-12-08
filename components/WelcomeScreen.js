@@ -1,7 +1,26 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity } from 'react-native';
 import axios from 'axios'
+import SignupScreen from './SignupScreen';
+import { createStackNavigator } from '@react-navigation/stack';
 
+const Stack = createStackNavigator();
+
+const LoginNavigator = () => {
+  return(
+      <Stack.Navigator
+      screenOptions = {{
+        headerShown: false,
+      }}>
+        <Stack.Screen
+        name="WelcomeScreen"
+        component={WorkoutsScreen} />
+        <Stack.Screen
+        name="SignupScreen"
+        component={SignupScreen} />
+      </Stack.Navigator>
+  )
+}
 // function GoWorkoutsScreen({ navigation }) {
 //   const onPressHandler = () => {
 //     navigation.navigate("WorkoutsScreen");
@@ -30,18 +49,18 @@ function WelcomeScreen(props) {
     });
   }
 
-  const registerOnPressHandler = () => {
-    axios.post('https://gym-tracker-mas.herokuapp.com/auth/register', {
-        email: username,
-        name: username,
-        password: password,
-    })
-    .then((response) => {
-      console.log(response.data);
-    }, (error) => {
-      console.log(error);
-    });
-  }
+  // const registerOnPressHandler = () => {
+  //   axios.post('https://gym-tracker-mas.herokuapp.com/auth/register', {
+  //       email: username,
+  //       name: username,
+  //       password: password,
+  //   })
+  //   .then((response) => {
+  //     console.log(response.data);
+  //   }, (error) => {
+  //     console.log(error);
+  //   });
+  // }
 
   return (
     <View style={styles.screen}>
@@ -50,13 +69,18 @@ function WelcomeScreen(props) {
       </View>
       <View style = {{paddingBottom: 30, paddingTop: 50,}}>
         <TextInput
-        placeholder="Username"
+        autoCapitalize='none'
+        autoCorrect = {false}
+        placeholder="Enter Username"
         style={styles.input}
         onChangeText={text => setUsername(text)}/>
       </View>
       <View style = {{paddingBottom: 30, fontSize: 50,}}>
         <TextInput
-        placeholder="Password" 
+        autoCapitalize='none'
+        autoCorrect = {false}
+        secureTextEntry = {true}
+        placeholder="Enter Password" 
         style={styles.input}
         onChangeText={text => setPassword(text)} />
       </View>
@@ -76,7 +100,7 @@ function WelcomeScreen(props) {
           style={{ padding: 10, fontSize: 20}} 
           title = "Create an Account" 
           color = {'white'} 
-          onPress={registerOnPressHandler} />
+          onPress = {() => props.navigation.navigate('SignupScreen')} />
         </View>
       </TouchableOpacity>
     </View>
@@ -97,7 +121,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     height: 50,
     textAlign: 'center',
-    fontSize: 20,
+    fontSize: 15,
   },
   buttonView: {
     padding: 5,
