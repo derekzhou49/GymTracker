@@ -1,10 +1,5 @@
-<<<<<<< HEAD
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, Alert } from 'react-native';
-=======
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity } from 'react-native';
->>>>>>> bb965d5cf87b182e829d6b764c6a57682b22b3b8
 import axios from 'axios'
 import { useAuth } from '../contexts/AuthContext';
 import { useCardAnimation, createStackNavigator } from '@react-navigation/stack';
