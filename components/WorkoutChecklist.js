@@ -1,19 +1,10 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, FlatList, SafeAreaView, Alert } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
-import { NavigationContainer, useLinkProps } from '@react-navigation/native';
-// import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
-// const Tab = createBottomTabNavigator();
 
 export default function WorkoutChecklist(props) {
-    // Will fetch these from the server once connected to backend
-    let params = props.route.params;
-	console.log("checklist params");
-    console.log(params);
-
-    const [exercises, setExercises] = useState(params.workout);
-    console.log(exercises)
+    let params = props.route.params.workout;
+    const [exercises, setExercises] = useState(params);
     const date = new Date();
 
     const displayIcon = (state) => {
@@ -53,10 +44,6 @@ export default function WorkoutChecklist(props) {
                           <TouchableOpacity
                           onPress={() => {
                               console.log("Press Handler")
-                            //   const idx = exercises.indexOf(item);
-                            //   let newExercises = [...exercises];
-                            //   newExercises.splice(idx, 1, {name: item.name, completed: !item.completed});
-                            //   setExercises(newExercises);
                           }}>
                               <View style = {{alignItems: 'flex-end'}}>
                                 {displayIcon(item.completed)}
@@ -88,7 +75,6 @@ export default function WorkoutChecklist(props) {
 const styles = StyleSheet.create({
     container: {
         fontSize: 35,
-        // backgroundColor: 'white',
     },
     checklist: {
         padding: 20,

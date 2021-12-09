@@ -68,8 +68,6 @@ export default function MainContainer() {
             iconName = focused ? 'home' : 'home-outline';
           } else if (route.name == 'Workouts') {
             iconName = focused ? 'barbell' : 'barbell-outline';
-          } else if (route.name == 'Temp') {
-            iconName = focused ? 'ios-list' : 'ios-list';
           } else if (route.name == 'Progress') {
             iconName = focused ? 'trending-up' : 'trending-up-outline';
           }
@@ -78,7 +76,6 @@ export default function MainContainer() {
       })}>
         <Tab.Screen name = "Home" component = {HomeScreen} />
         <Tab.Screen name = "Workouts" component={WorkoutStackNavigator} />
-        <Tab.Screen name = "Temp" component = {LogWorkout} />
         <Tab.Screen name = "Progress" component = {VisualizeLogs} />
       </Tab.Navigator>
   );
