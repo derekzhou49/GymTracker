@@ -56,11 +56,13 @@ function StartWorkout(props) {
       <View style={styles.title}>
         <Text style={{ fontSize: 35, fontWeight: 'bold'}}> {params.workoutName} </Text>
       </View>
-      <FlatList 
-      keyExtractor = {(item) => item.id}
-      data = {exercises}
-      renderItem = {renderItem}
-      />
+      <View style = {{maxHeight: 440}}>
+        <FlatList 
+        keyExtractor = {(item) => item.id}
+        data = {exercises}
+        renderItem = {renderItem}
+        />
+      </View>
       <TouchableOpacity> 
           <View style = {styles.buttons}>
             <TouchableOpacity
@@ -101,7 +103,7 @@ const styles = StyleSheet.create({
   },
   buttons: {
     padding: 10,
-    marginVertical: 20,
+    marginVertical: 15,
     backgroundColor: '#2162C2',
     borderColor: 'black',
     borderRadius: 25,

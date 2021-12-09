@@ -66,7 +66,7 @@ const Graph = (props) => {
 	[props.workout, props.exercise, props.startDate, props.endDate]);
 	
 	return  (
-		<View>
+		<View style = {{height: Dimensions.get('window').height / 3, justifyContent: 'center'}}>
 			{ graphData.x.length != 0 ?
 			<>
 				<Modal
@@ -113,7 +113,10 @@ const Graph = (props) => {
 				/> 
 			</>
 			:
-			<Text style = {{fontSize: 30, marginVertical: 30, textAlign: 'center' }}> Choose Workout, Exercise and Time Range to Display Progress </Text> }
+			<Text style = {{fontSize: 25, 
+			marginVertical: 30, 
+			marginHorizontal: 20 ,
+			textAlign: 'center',}}> Select Workout, Exercise, and Time Range to Visualize Progress! </Text> }
 		</View>
 	);
 }
@@ -305,6 +308,7 @@ const styles = StyleSheet.create({
 	  color: "#2162C2"
   },
   header: {
+	marginTop: 10, 
 	fontSize: 40,
 	color: "#2162C2",
   },
