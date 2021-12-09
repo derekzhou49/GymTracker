@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, Alert } from 'react-native';
 import axios from 'axios'
 import SignupScreen from './SignupScreen';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -46,6 +46,13 @@ function WelcomeScreen(props) {
       props.navigation.replace('MainContainer');
     }, (error) => {
       console.log(error);
+      Alert.alert(
+        "Error!",
+        "Incorrect Username or Password",
+        [
+          { text: "OK", onPress: () => console.log("OK Pressed") }
+        ]
+      );
     });
   }
 
