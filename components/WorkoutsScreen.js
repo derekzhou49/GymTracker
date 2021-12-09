@@ -21,7 +21,6 @@ function WorkoutsScreen(props) {
     const [enteredWorkout, setEnteredWorkout] = useState("");
     const [workouts, setWorkouts] = useState([]);
     const [userId, setUserId] = useAuth();
-    
 	useEffect(() => {
 		getWorkouts()
 	}, [props]);
@@ -29,7 +28,7 @@ function WorkoutsScreen(props) {
 	async function getWorkouts() {
 		console.log("getting workout data");
 		const { data } = await axios.get('https://gym-tracker-mas.herokuapp.com/api/users/' + userId.toString() + '/workouts/');
-		console.log(data);
+    console.log(data)
 		const workoutList = data.map((element, index) => { return({id: index + 1, value: element.name, workoutId: element.id}) });
 		setWorkouts(workoutList);
 	}
