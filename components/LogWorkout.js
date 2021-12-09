@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, SafeAreaView } from 'react-native';
 import SliderText from 'react-native-slider-text';
 import { Dimensions } from 'react-native';
+import { useLog } from '../contexts/LogContext';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -16,6 +17,8 @@ export default function LogWorkout(props) {
     let itemNotes = "";
 
     const [notes, setNotes] = useState("");
+    // console.log("context is")
+    // console.log(useLog());
 
     let exerciseName = "Bench Press"
     
