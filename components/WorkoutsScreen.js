@@ -25,7 +25,6 @@ function WorkoutsScreen(props) {
     const [enteredWorkout, setEnteredWorkout] = useState("");
     const [workouts, setWorkouts] = useState([]);
     const [userId, setUserId] = useAuth();
-    
 	useEffect(() => {
 		getWorkouts()
 	}, [props]);
@@ -33,7 +32,7 @@ function WorkoutsScreen(props) {
 	async function getWorkouts() {
 		console.log("getting workout data");
 		const { data } = await axios.get('https://gym-tracker-mas.herokuapp.com/api/users/' + userId.toString() + '/workouts/');
-		console.log(data);
+    console.log(data)
 		const workoutList = data.map((element, index) => { return({id: index + 1, value: element.name, workoutId: element.id}) });
 		setWorkouts(workoutList);
 	}
@@ -86,7 +85,7 @@ function WorkoutsScreen(props) {
       keyExtractor = {(item, index) => item.id.toString()}
       data = {workouts}
       renderItem = {itemData => (
-          <TouchableOpacity activeOpacity={.8} onPress={() => props.navigation.navigate("StartWorkout", {screen: "StartWorkout", params: {workoutName: itemData.item.value, workoutID: itemData.item.id}})}>
+          <TouchableOpacity activeOpacity={.8} onPress={() => props.navigation.navigate("StartWorkout", {screen: "StartWorkout", params: itemData})}>
             <View style = {styles.workoutItem}>
             <Text style = {{fontSize: 25, textAlign: 'center', fontWeight: 'bold'}}> {"Workout " + itemData.item.id} </Text>
                 <Text style = {{fontSize: 25, textAlign: 'center',}}> {itemData.item.value} </Text>
