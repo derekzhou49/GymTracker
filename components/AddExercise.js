@@ -2,15 +2,19 @@ import { useLinkProps } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity } from 'react-native';
 import SliderText from 'react-native-slider-text';
+import { useAuth } from '../contexts/AuthContext';
+import axios from 'axios';
 
 export default function AddExercise(props) {
+    // console.log("params on this screen are")
+    // console.log(props.route.params)
     let itemExercise = "";
     let itemSets = "";
     let itemReps = "";
     let itemWeight = "";
     let itemNotes = "";
     
-    if (props.route.params !== undefined) {
+    if (props.route.params.exercise !== undefined) {
         itemExercise = props.route.params.exercise.title;
         itemSets = props.route.params.exercise.sets;
         itemReps = props.route.params.exercise.reps;
@@ -26,6 +30,7 @@ export default function AddExercise(props) {
     const [setsValue, setSetsValue] = useState(itemSets);
     const [repsValue, setRepsValue] = useState(itemReps);
     const [weightValue, setWeightValue] = useState(itemWeight);
+    const [userId, setUserId] = useAuth();
 
   return (
       <View style={styles.container}>
@@ -95,13 +100,29 @@ export default function AddExercise(props) {
 
         <TouchableOpacity
         onPress={() => {
-            const data = {id: Math.random().toString(),
-                title: exercise,
-                sets: setsValue,
-                reps: repsValue,
-                weight: weightValue,
+            // console.log("Fields are");
+            // console.log(`${itemReps}; ${itemSets}; ${itemWeight}; ${itemExercise}`);
+            function addExercise() {
+                const newExerciseData = {
+                    baseReps: Math.floor(setsValue),
+                    baseSets: Math.floor(repsValue),
+                    baseWeight: Math.floor(weightValue),
+                    name: exercise
+                };
+                axios.post(`https://gym-tracker-mas.herokuapp.com/api/users/${userId}/workouts/${props.route.params.workoutID}/exercises`, newExerciseData)
+                .then(response => {
+                    const startWorkoutParams = {params: {workoutID: props.route.params.workoutID, workoutName: props.route.params.workoutName}};
+                    props.navigation.navigate("StartWorkout", startWorkoutParams);
+                });
             }
-            props.navigation.navigate("StartWorkout", {data})
+            // const data = {id: Math.random().toString(),
+            //     title: exercise,
+            //     sets: setsValue,
+            //     reps: repsValue,
+            //     weight: weightValue,
+            // }
+            addExercise();
+            // props.navigation.navigate("StartWorkout", {workoutID: props.route.params.workoutID, workoutName: props.route.params.workoutName});
         }} > 
             <View style = {styles.submit}>
                 <Text style = {{fontSize: 30, textAlign: 'center', color: 'white' }}> Submit </Text>

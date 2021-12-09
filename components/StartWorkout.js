@@ -13,20 +13,20 @@ function StartWorkout(props) {
   // Start the workout
   // For testing purposes, later change to fetch workout data from database
   let params = props.route.params.params;
-  let workoutID = parseInt(params.workoutID) - 1;
+  // let workoutID = parseInt(params.workoutID) - 1;
 
   const [userId, setUserId] = useAuth();
   const [exercises, setExercises] = useState([]);
   useEffect(() => {
-		getExercises()
-	}, [props]);
+    getExercises()
+  }, [props]);
 
   async function getExercises() {
-		console.log("getting exercises");
-		const { data } = await axios.get('https://gym-tracker-mas.herokuapp.com/api/users/' + userId.toString() + '/workouts/' + params.workoutID.toString() + '/exercises/');
-		console.log(data);
-		setExercises(data);
-	}
+    console.log("getting exercises");
+    const { data } = await axios.get('https://gym-tracker-mas.herokuapp.com/api/users/' + userId.toString() + '/workouts/' + params.workoutID.toString() + '/exercises/');
+    console.log(data);
+    setExercises(data);
+  }
     
   const onPressHandler = () => {
     props.navigation.navigate("WorkoutChecklist", {workout: exercises, workoutName: params.workoutName});
@@ -36,8 +36,8 @@ function StartWorkout(props) {
     return (
       <TouchableOpacity
       onPress={async () => {
-			await axios.delete('https://gym-tracker-mas.herokuapp.com/api/users/' + userId.toString() + '/workouts/' + params.workoutID.toString() + '/exercises/' + item.item.id.toString());
-			getExercises();
+      await axios.delete('https://gym-tracker-mas.herokuapp.com/api/users/' + userId.toString() + '/workouts/' + params.workoutID.toString() + '/exercises/' + item.item.id.toString());
+      getExercises();
       }} >
         <View style={styles.workoutItem}>
             <Text style={{ fontSize: 20, textAlign: 'center', fontWeight: 'bold'}}>{item.item.name}</Text>
@@ -51,7 +51,6 @@ function StartWorkout(props) {
         props.route.params.data = undefined
         setExercises(prevExercises => [...prevExercises, newData])
       }
-      console.log(params)
       return (
     <SafeAreaView style={styles.screen}>
       <View style={styles.title}>
@@ -71,7 +70,7 @@ function StartWorkout(props) {
           </View>
         </TouchableOpacity>  
         <TouchableOpacity
-        onPress={() => props.navigation.navigate("AddExercise")}> 
+        onPress={() => props.navigation.navigate("AddExercise", {workoutID: params.workoutID, workoutName: params.workoutName})}> 
           <View style = {styles.buttons}>
             <Text style = {{fontSize: 25, textAlign: 'center', color: 'white'}}> Add Exercise </Text>
           </View>
