@@ -43,6 +43,9 @@ function HomeScreen(props) {
 					<View style = {styles.workoutItem}>
 					<Text style = {{fontSize: 25, textAlign: 'center', fontWeight: 'bold'}}> {"Exercise: " + itemData.item.name} </Text>
 						<Text style = {{fontSize: 25, textAlign: 'center',}}> {"We recomend that you increase your base weight by 5 percent. " + itemData.item.baseWeight + "lbs -> " + (2.5 * Math.ceil(itemData.item.baseWeight * 1.05/2.5)) +"lbs"} </Text>
+						<TouchableOpacity style = {styles.workoutItem}>
+							<Text style={{fontSize: 25, textAlign: 'center', fontWeight: 'bold'}}>Click here to increase</Text>
+						</TouchableOpacity>
 					</View>
 				  </TouchableOpacity>
 				);
