@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, SafeAreaView } from 'react-native';
 import SliderText from 'react-native-slider-text';
 import { Dimensions } from 'react-native';
+import { useLog } from '../contexts/AuthContext';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -16,6 +17,9 @@ export default function LogWorkout(props) {
     let itemNotes = "";
 
     const [notes, setNotes] = useState("");
+    const [logList, setLogList] = useLog();
+    // console.log("LogWorkout loglist is")
+    // console.log(logList);
 
     let exerciseName = "Bench Press"
     

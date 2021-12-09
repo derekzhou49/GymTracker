@@ -1,11 +1,32 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, FlatList, SafeAreaView, Alert } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
+import { useLog } from '../contexts/AuthContext';
 
 export default function WorkoutChecklist(props) {
     let params = props.route.params.workout;
     const [exercises, setExercises] = useState(params);
+    const [logList, setLogList] = useLog();
     const date = new Date();
+
+    if (logList.length === 0) {
+        let localLogList = exercises.map(item => {
+            let logItem = {};
+            logItem.reps = item.baseReps;
+            logItem.sets = item.baseSets;
+            logItem.weight = item.baseWeight;
+            logItem.exerciseId = item.id;
+            logItem.name = item.name;
+            logItem.notes = "";
+            return logItem;
+        });
+        setLogList(localLogList);
+    }
+
+    // console.log("LogList is")
+    // console.log(logList)
+
+
 
     const displayIcon = (state) => {
         if (!state) {

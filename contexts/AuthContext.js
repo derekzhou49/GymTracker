@@ -1,9 +1,14 @@
 import React, {useState, useContext} from 'react';
 
 const AuthContext = React.createContext();
+const LogContext = React.createContext();
 
 export const useAuth = ()  => {
     return useContext(AuthContext);
+}
+
+export const useLog = () => {
+    return useContext(LogContext);
 }
 
 /*
@@ -13,27 +18,13 @@ Do this call similar to how useState is called
 
 const AuthProvider = ({children}) => {
     const [currentUser, setCurrentUser] = useState();
-
-    // const loginUser = async (email, password) => {
-    //     // dummy code
-    //     const user = {email, password};
-    //     setCurrentUser(user);
-    // };
-
-    // const logoutUser = async () => {
-    //     // dummy code
-    //     setCurrentUser(null);
-    // }
-
-    // const value = {
-    //     currentUser,
-    //     loginUser,
-    //     logoutUser
-    // };
+    const [logList, setLogList] = useState([]);
 
     return (
         <AuthContext.Provider value={[currentUser, setCurrentUser]}>
-            {children}
+            <LogContext.Provider value={[logList, setLogList]}>
+                {children}
+            </LogContext.Provider>
         </AuthContext.Provider>
     );
 };
