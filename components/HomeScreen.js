@@ -24,14 +24,13 @@ function HomeScreen(props) {
 			totalExercise.push(exercise.data)
 		}	
 		setExerciseList(totalExercise.flat());
-		
 	}
 
 
   return (
     <SafeAreaView style={styles.screen}>
       <View style={styles.title}>
-      <Text style={{ fontSize: 60, color: "#2162C2"}}> Dane </Text>
+      {/* <Text style={{ fontSize: 60, color: "#2162C2"}}> Welcome Back! </Text> */}
         <Text style={{ fontSize: 30, color: "#2162C2"}}> Welcome Back! </Text>
       </View>
       <FlatList

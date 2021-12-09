@@ -1,8 +1,14 @@
+<<<<<<< HEAD
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, Alert } from 'react-native';
+=======
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity } from 'react-native';
+>>>>>>> bb965d5cf87b182e829d6b764c6a57682b22b3b8
 import axios from 'axios'
+import { useAuth } from '../contexts/AuthContext';
+import { useCardAnimation, createStackNavigator } from '@react-navigation/stack';
 import SignupScreen from './SignupScreen';
-import { createStackNavigator } from '@react-navigation/stack';
 
 const Stack = createStackNavigator();
 
@@ -33,6 +39,7 @@ var myID = "";
 function WelcomeScreen(props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [uerId, setUserId] = useAuth();
 
   const loginOnPressHandler = () => {
     axios.post('https://gym-tracker-mas.herokuapp.com/auth/login', {
@@ -40,6 +47,7 @@ function WelcomeScreen(props) {
         password: password,
     })
     .then((response) => {
+      setUserId(response.data.id);
       console.log(response.data);
       myID = response.data.id;
       console.log(response.data.id);

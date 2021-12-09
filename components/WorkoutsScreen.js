@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, FlatList, Alert, Modal } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import {CHEST_TRI, BACK_BI, LEG_SHOULDER } from './../testing/data';
+import { useAuth } from '../contexts/AuthContext';
+import Swipeable from 'react-native-swipeable';
+import axios from 'axios';
 
 function WorkoutsScreen(props) {
     const onPressHandler = () => {
@@ -13,36 +16,30 @@ function WorkoutsScreen(props) {
 
     const toggleModalVisibility = () => {
       setModalVisible(!isModalVisible);
-  };
+	};
 
-    const workoutData = [
-      {id: '1', value: "Chest and Triceps"},
-      {id: '2', value: "Back and Biceps"},
-      {id: '3', value: "Legs and Shoulders"}];
-      
     const [enteredWorkout, setEnteredWorkout] = useState("");
-    const [workouts, setWorkouts] = useState(workoutData);
-    
+    const [workouts, setWorkouts] = useState([]);
+    const [userId, setUserId] = useAuth();
+	useEffect(() => {
+		getWorkouts()
+	}, [props]);
+
+	async function getWorkouts() {
+		console.log("getting workout data");
+		const { data } = await axios.get('https://gym-tracker-mas.herokuapp.com/api/users/' + userId.toString() + '/workouts/');
+    console.log(data)
+		const workoutList = data.map((element, index) => { return({id: index + 1, value: element.name, workoutId: element.id}) });
+		setWorkouts(workoutList);
+	}
+
     const workoutInputHandler = enteredText => {
         setEnteredWorkout(enteredText);
     };
 
-    const addWorkoutHandler = () => {
-        // let add = false
-        // const options = [
-        //   {text: "Yes", onPress: () => {
-        //     setWorkouts(currentWorkouts => [
-        //       ...currentWorkouts,
-        //       { id: workoutData.length + 1, value: enteredWorkout }
-        //       ]);
-        //   }},
-        //   {text: "No", style: "cancel"}
-        // ]
-        // Alert.alert("Confirm", `Are you sure you want to add the workout "${enteredWorkout}"?`, options)
-        setWorkouts(currentWorkouts => [
-                ...currentWorkouts,
-                { id: workoutData.length + 1, value: enteredWorkout }
-                ]);
+    const addWorkoutHandler = async () => {
+		const { data } = await axios.post('https://gym-tracker-mas.herokuapp.com/api/users/' + userId.toString() + '/workouts/', {name: enteredWorkout});
+		getWorkouts();
         setEnteredWorkout("");
         toggleModalVisibility();
     };
@@ -52,30 +49,31 @@ function WorkoutsScreen(props) {
       <View style={styles.title}>
         <Text style={{ fontSize: 40, fontWeight: 'bold'}}> Workouts </Text>
       </View>
-      {/* <View>
-        <Text style={{ fontSize: 20, textAlign: "center" }}> Add a New Workout</Text>
-        <TextInput
-            placeholder="Workout Name"
-            style={styles.input}
-            onChangeText={workoutInputHandler}
-            value={enteredWorkout}
-        />
-        <Button
-        title="Add Workout"
-        onPress={addWorkoutHandler} />
-        </View> */}
       <View style = {{maxHeight: 450,}}>
       <FlatList
       initialNumToRender = {2}
       keyExtractor = {(item, index) => item.id.toString()}
       data = {workouts}
       renderItem = {itemData => (
+		 <Swipeable 
+		 leftActionActivationDistance={200}
+		 leftContent={
+			<View style={{backgroundColor: 'red', justifyContent: 'center'}}>
+				<Text style = {{fontSize: 25, textAlign: 'center', fontWeight: 'bold'}}>Delete!</Text>
+			</View>
+		 } 
+		 onLeftActionComplete={ async () => {
+			await axios.delete('https://gym-tracker-mas.herokuapp.com/api/users/' + userId.toString() + '/workouts/' + itemData.item.workoutId);
+			getWorkouts();
+		 }}
+		 >
           <TouchableOpacity activeOpacity={.8} onPress={() => props.navigation.navigate("StartWorkout", {screen: "StartWorkout", params: {workoutName: itemData.item.value, workoutID: itemData.item.id}})}>
             <View style = {styles.workoutItem}>
             <Text style = {{fontSize: 25, textAlign: 'center', fontWeight: 'bold'}}> {"Workout " + itemData.item.id} </Text>
                 <Text style = {{fontSize: 25, textAlign: 'center',}}> {itemData.item.value} </Text>
             </View>
           </TouchableOpacity>
+		</Swipeable>
       )}
       />
       </View>
