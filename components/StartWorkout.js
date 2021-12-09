@@ -24,7 +24,7 @@ function StartWorkout(props) {
 
   async function getExercises() {
 		console.log("getting exercises");
-		const { data } = await axios.get('https://gym-tracker-mas.herokuapp.com/api/users/' + userId.toString() + '/workouts/' + props.route.params.params.item.workoutId.toString() + '/exercises/');
+		const { data } = await axios.get('https://gym-tracker-mas.herokuapp.com/api/users/' + userId.toString() + '/workouts/' + params.workoutID.toString() + '/exercises/');
 		console.log(data);
 		setExercises(data);
 	}
@@ -51,11 +51,11 @@ function StartWorkout(props) {
         props.route.params.data = undefined
         setExercises(prevExercises => [...prevExercises, newData])
       }
-  
+      console.log(params)
       return (
     <SafeAreaView style={styles.screen}>
       <View style={styles.title}>
-        <Text style={{ fontSize: 35, fontWeight: 'bold'}}> {params.item.value} </Text>
+        <Text style={{ fontSize: 35, fontWeight: 'bold'}}> {params.workoutName} </Text>
       </View>
       <FlatList 
       keyExtractor = {(item) => item.id}
