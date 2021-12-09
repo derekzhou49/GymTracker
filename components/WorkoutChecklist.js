@@ -9,10 +9,9 @@ import { NavigationContainer, useLinkProps } from '@react-navigation/native';
 export default function WorkoutChecklist(props) {
     // Will fetch these from the server once connected to backend
     let params = props.route.params;
-    // console.log(params);
-    const workoutNum = 2;
-    const workoutName = "Chest and Triceps";
-    let exerciseData = [{name: "Bench Press", completed: false}, {name: "Iso Lateral Wide Chest", completed: false}, {name: "Chest Flys", completed: false}, {name: "Tricep Dips", completed: false}];
+	console.log("checklist params");
+    console.log(params);
+
     const [exercises, setExercises] = useState(params.workout);
     console.log(exercises)
     const date = new Date();
@@ -44,11 +43,11 @@ export default function WorkoutChecklist(props) {
               data={exercises}
               renderItem={({ item }) => {
                   return(
-                      <View style = {{flexDirection:'row', paddingTop: 30, justifyContent: 'space-between'}}>
+                      <View style = {styles.checklist, {flexDirection:'row', paddingTop: 30, justifyContent: 'space-between'}}>
                           <View>
                               <TouchableOpacity
                                onPress={() => props.navigation.navigate('LogWorkout', {exercise: item})}>
-                                  <Text>{item.title}</Text>
+								  <Text style={{ fontSize: 20, textAlign: 'center', fontWeight: 'bold'}}>{item.name}</Text>
                               </TouchableOpacity>
                           </View>
                           <TouchableOpacity
