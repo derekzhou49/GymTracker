@@ -4,7 +4,6 @@ import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, SafeAreaVi
 import WorkoutChecklist from './WorkoutChecklist';
 import { CHEST_TRI, BACK_BI, LEG_SHOULDER } from './../testing/data';
 import { useAuth } from '../contexts/AuthContext';
-import { useWorkout } from '../contexts/WorkoutContext';
 import axios from 'axios';
 
 var DATA1 = [CHEST_TRI, BACK_BI, LEG_SHOULDER]
