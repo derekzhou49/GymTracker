@@ -4,6 +4,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import {CHEST_TRI, BACK_BI, LEG_SHOULDER } from './../testing/data';
 import { useAuth } from '../contexts/AuthContext';
+import Swipeable from 'react-native-swipeable';
 import axios from 'axios';
 
 function WorkoutsScreen(props) {
@@ -55,12 +56,25 @@ function WorkoutsScreen(props) {
       keyExtractor = {(item, index) => item.id.toString()}
       data = {workouts}
       renderItem = {itemData => (
+		 <Swipeable 
+		 leftActionActivationDistance={200}
+		 leftContent={
+			<View style={{backgroundColor: 'red', justifyContent: 'center'}}>
+				<Text style = {{fontSize: 25, textAlign: 'center', fontWeight: 'bold'}}>Delete!</Text>
+			</View>
+		 } 
+		 onLeftActionComplete={ async () => {
+			await axios.delete('https://gym-tracker-mas.herokuapp.com/api/users/' + userId.toString() + '/workouts/' + itemData.item.workoutId);
+			getWorkouts();
+		 }}
+		 >
           <TouchableOpacity activeOpacity={.8} onPress={() => props.navigation.navigate("StartWorkout", {screen: "StartWorkout", params: {workoutName: itemData.item.value, workoutID: itemData.item.id}})}>
             <View style = {styles.workoutItem}>
             <Text style = {{fontSize: 25, textAlign: 'center', fontWeight: 'bold'}}> {"Workout " + itemData.item.id} </Text>
                 <Text style = {{fontSize: 25, textAlign: 'center',}}> {itemData.item.value} </Text>
             </View>
           </TouchableOpacity>
+		</Swipeable>
       )}
       />
       </View>
