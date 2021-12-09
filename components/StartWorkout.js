@@ -35,8 +35,9 @@ function StartWorkout(props) {
   const renderItem = item => {
     return (
       <TouchableOpacity
-      onPress={() => {
-        setExercises(exercises.filter(exercise => exercise.id !== item.item.id))
+      onPress={async () => {
+			await axios.delete('https://gym-tracker-mas.herokuapp.com/api/users/' + userId.toString() + '/workouts/' + params.workoutID.toString() + '/exercises/' + item.item.id.toString());
+			getExercises();
       }} >
         <View style={styles.workoutItem}>
             <Text style={{ fontSize: 20, textAlign: 'center', fontWeight: 'bold'}}>{item.item.name}</Text>
