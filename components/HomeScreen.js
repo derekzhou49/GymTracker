@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, SafeAreaView, FlatList, Dimensions } from 'react-native';
 import { useAuth } from '../contexts/AuthContext';
-
 import axios from 'axios';
 
 
@@ -16,15 +15,10 @@ function HomeScreen(props) {
 	}, [props]);
 
 	async function getExercises() {
-		console.log("getting workout data");
 		const { data } = await axios.get('https://gym-tracker-mas.herokuapp.com/api/users/1/workouts/')
 		let totalExercise = []
-		console.log(data);
 		for (let i = 0; i < data.length; i++) {
-			console.log("getting exercise data");
 			const exercise = await axios.get('https://gym-tracker-mas.herokuapp.com/api/users/1/workouts/' + data[i].id.toString() + '/exercises/');
-			console.log(exercise.data);
-			console.log(exercise.data.length);
 			totalExercise.push(exercise.data)
 		}	
 		setExerciseList(totalExercise.flat());
@@ -39,7 +33,7 @@ function HomeScreen(props) {
   return (
     <SafeAreaView style={styles.screen}>
       <TouchableOpacity
-      onPress={logoutOnPressHandler}>
+        onPress={logoutOnPressHandler}>
         <View style = {styles.buttons}>  
           <Text style = {{fontSize: 25, textAlign: 'center', color: 'white'}}> Sign out </Text>
         </View>
@@ -50,17 +44,16 @@ function HomeScreen(props) {
       <FlatList
       data = {exerciseList}
       renderItem = {itemData => {
-			console.log(itemData);
 			if (itemData.item.upgrade) {
 				return (
 				  <TouchableOpacity activeOpacity={.8}>
-					<View style = {styles.workoutItem}>
-					<Text style = {{fontSize: 25, textAlign: 'center', fontWeight: 'bold'}}> {"Exercise: " + itemData.item.name} </Text>
-						<Text style = {{fontSize: 25, textAlign: 'center',}}> {"We recomend that you increase your base weight by 5 percent. " + itemData.item.baseWeight + "lbs -> " + (2.5 * Math.ceil(itemData.item.baseWeight * 1.05/2.5)) +"lbs"} </Text>
-						<TouchableOpacity style = {styles.workoutItem}>
-							<Text style={{fontSize: 25, textAlign: 'center', fontWeight: 'bold'}}>Click here to increase</Text>
-						</TouchableOpacity>
-					</View>
+					  <View style = {styles.workoutItem}>
+					    <Text style = {{fontSize: 25, textAlign: 'center', fontWeight: 'bold'}}> {"Exercise: " + itemData.item.name} </Text>
+						  <Text style = {{fontSize: 25, textAlign: 'center',}}> {"We recomend that you increase your base weight by 5 percent. " + itemData.item.baseWeight + "lbs -> " + (2.5 * Math.ceil(itemData.item.baseWeight * 1.05/2.5)) +"lbs"} </Text>
+						  <TouchableOpacity style = {styles.workoutItem}>
+							  <Text style={{fontSize: 25, textAlign: 'center', fontWeight: 'bold'}}>Click here to increase</Text>
+						  </TouchableOpacity>
+					  </View>
 				  </TouchableOpacity>
 				);
 			}
