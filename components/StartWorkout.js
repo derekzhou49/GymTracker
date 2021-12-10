@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, SafeAreaView, FlatList } from 'react-native';
 import WorkoutChecklist from './WorkoutChecklist';
 import { CHEST_TRI, BACK_BI, LEG_SHOULDER } from './../testing/data';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth, useLog } from '../contexts/AuthContext';
 import axios from 'axios';
 
 var DATA1 = [CHEST_TRI, BACK_BI, LEG_SHOULDER]
@@ -17,6 +17,8 @@ function StartWorkout(props) {
 
   const [userId, setUserId] = useAuth();
   const [exercises, setExercises] = useState([]);
+  const [logList, setLogList] = useLog();
+
   useEffect(() => {
     getExercises()
   }, [props]);
