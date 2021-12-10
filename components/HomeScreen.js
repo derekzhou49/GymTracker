@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, SafeAreaView, FlatList } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, SafeAreaView, FlatList, Dimensions } from 'react-native';
+import { useAuth } from '../contexts/AuthContext';
+
 import axios from 'axios';
 
 
 
 function HomeScreen(props) {
 	const [exerciseList, setExerciseList] = useState([]);
+
+  const [userId, setUserId] = useAuth();
 
 	useEffect(() => {
 		getExercises();
@@ -26,11 +30,21 @@ function HomeScreen(props) {
 		setExerciseList(totalExercise.flat());
 	}
 
+  const logoutOnPressHandler = () => {
+    setUserId(-1)
+    props.navigation.replace('LoginContainer');
+  }
+
 
   return (
     <SafeAreaView style={styles.screen}>
+      <TouchableOpacity
+      onPress={logoutOnPressHandler}>
+        <View style = {styles.buttons}>  
+          <Text style = {{fontSize: 25, textAlign: 'center', color: 'white'}}> Sign out </Text>
+        </View>
+      </TouchableOpacity>
       <View style={styles.title}>
-      {/* <Text style={{ fontSize: 60, color: "#2162C2"}}> Welcome Back! </Text> */}
         <Text style={{ fontSize: 30, color: "#2162C2"}}> Welcome Back! </Text>
       </View>
       <FlatList
@@ -58,7 +72,9 @@ function HomeScreen(props) {
 const styles = StyleSheet.create({
   screen: {
     padding: 50,
+    height: Dimensions.get('window').height,
     alignContent: 'center',
+    borderColor: 'black',
   },
   title: {
     alignItems: 'center',
@@ -79,14 +95,15 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     marginHorizontal: 40
   },
-  newWorkout: {
-    padding: 20,
-    marginVertical: 20,
+  buttons: {
+    padding: 10,
+    marginVertical: 15,
     backgroundColor: '#2162C2',
     borderColor: 'black',
     borderRadius: 25,
     marginLeft: 30,
     marginRight: 30,
+    alignSelf: 'flex-end'
   },
   viewWrapper: {
     flex: 1,
