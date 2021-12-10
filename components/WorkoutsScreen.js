@@ -67,7 +67,10 @@ function WorkoutsScreen(props) {
 			getWorkouts();
 		 }}
 		 >
-          <TouchableOpacity activeOpacity={.8} onPress={() => props.navigation.navigate("StartWorkout", {screen: "StartWorkout", params: {workoutName: itemData.item.value, workoutID: itemData.item.id}})}>
+          <TouchableOpacity activeOpacity={.8} onPress={() => {
+			 console.log(itemData);
+			 props.navigation.navigate("StartWorkout", {screen: "StartWorkout", params: {workoutName: itemData.item.value, workoutID: itemData.item.workoutId}});
+			}}>
             <View style = {styles.workoutItem}>
             <Text style = {{fontSize: 25, textAlign: 'center', fontWeight: 'bold'}}> {"Workout " + itemData.item.id} </Text>
                 <Text style = {{fontSize: 25, textAlign: 'center',}}> {itemData.item.value} </Text>
