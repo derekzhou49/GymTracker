@@ -10,6 +10,9 @@ const windowHeight = Dimensions.get('window').height;
 
 
 export default function LogWorkout(props) {
+
+  console.log("props for log workout are")
+  console.log(props)
     let itemExercise = "";
     let itemSets = "";
     let itemReps = "";
@@ -24,7 +27,7 @@ export default function LogWorkout(props) {
     let exerciseName = "Bench Press"
     
     if (props.route.params !== undefined) {
-        itemExercise = props.route.params.exercise.title;
+        itemExercise = props.route.params.exercise.name;
         itemSets = props.route.params.exercise.sets;
         itemReps = props.route.params.exercise.reps;
         itemWeight = props.route.params.exercise.weight;
@@ -67,7 +70,8 @@ export default function LogWorkout(props) {
                     minimumValueLabel="0"
                     maximumValueLabel="10"
                     onValueChange={(id) => setSetsValue(id)}
-                    sliderValue={setsValue}/>
+                    sliderValue={setsValue}
+                    value={setsValue}/>
                 </View>
               </View>
 
@@ -83,7 +87,8 @@ export default function LogWorkout(props) {
                     minimumValueLabel="0"
                     maximumValueLabel="25"
                     onValueChange={(id) => setRepsValue(id)}
-                    sliderValue={repsValue}/>
+                    sliderValue={repsValue}
+                    value={repsValue}/>
               </View>
               </View>
 
@@ -100,7 +105,9 @@ export default function LogWorkout(props) {
                     minimumValueLabel="0"
                     maximumValueLabel="600"
                     onValueChange={(id) => setWeightValue(id)}
-                    sliderValue={weightValue}/>
+                    sliderValue={weightValue}
+                    value={weightValue}
+                    />
                 </View>
               </View>
                 <Text style={styles.inputName}>Weight</Text>
@@ -122,12 +129,17 @@ export default function LogWorkout(props) {
         <TouchableOpacity
         onPress={() => {
             const data = {id: Math.random().toString(),
-                title: exercise,
+                name: exercise,
                 sets: setsValue,
                 reps: repsValue,
                 weight: weightValue,
+                exerciseId: props.route.params.exercise.exerciseId,
+                notes: notes,
+                index: props.route.params.exercise.index
             }
-            props.navigation.navigate("StartWorkout", {data})
+            console.log("Data is")
+            console.log(data)
+            props.navigation.navigate("WorkoutChecklist", {workout: props.route.params.exercises, workoutLog: data, workoutName: props.route.params.workoutName})
         }} > 
             <View style = {styles.submit}>
                 <Text style = {{fontSize: 15, textAlign: 'center', color: 'white' }}> Submit </Text>

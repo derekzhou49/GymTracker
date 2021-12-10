@@ -1,16 +1,22 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, FlatList, SafeAreaView, Alert } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
-import { useLog } from '../contexts/AuthContext';
+import { useAuth } from '../contexts/AuthContext';
+import axios from 'axios';
 
 export default function WorkoutChecklist(props) {
     let params = props.route.params.workout;
     const [exercises, setExercises] = useState(params);
-    const [logList, setLogList] = useLog();
+    const [userId, setUserId] = useAuth();
+    const workoutId = params[0].workoutId;
+    const [logList, setLogList] = useState([]);
     const date = new Date();
 
+    console.log("Loglist for workout checklist are");
+    console.log(logList)
+
     if (logList.length === 0) {
-        let localLogList = exercises.map(item => {
+        let localLogList = exercises.map((item, index) => {
             let logItem = {};
             logItem.reps = item.baseReps;
             logItem.sets = item.baseSets;
@@ -18,15 +24,34 @@ export default function WorkoutChecklist(props) {
             logItem.exerciseId = item.id;
             logItem.name = item.name;
             logItem.notes = "";
+            logItem.index = index;
             return logItem;
         });
         setLogList(localLogList);
+    }
+    if (props.route.params.workoutLog != undefined) {
+        const updateLog = Object.assign({}, props.route.params.workoutLog);
+        props.route.params.workoutLog = undefined
+        setLogList(prev => {
+            prev[updateLog.index] = updateLog;
+            return prev;
+        })
     }
 
     // console.log("LogList is")
     // console.log(logList)
 
-
+    const submitLog = (logItem, index) => {
+        axios.post(`https://gym-tracker-mas.herokuapp.com/api/users/${userId}/workouts/${workoutId}/exercises/${logItem.exerciseId}/logs`, logItem)
+        .then(response => {
+            const incIndex = index + 1;
+            if (incIndex < logList.length) {
+                submitLog(logList[incIndex], incIndex);
+            } else {
+                props.navigation.navigate("WorkoutsScreen");
+            }
+        });
+    };
 
     const displayIcon = (state) => {
         if (!state) {
@@ -48,17 +73,17 @@ export default function WorkoutChecklist(props) {
   return(
       <SafeAreaView>
           <Text style = {{fontSize: 35, fontWeight: 'bold', textAlign: 'center'}}> Workout Checklist </Text>
-          <Text style = {{fontSize: 20, fontWeight: 'bold', textAlign: 'center'}}> {params.workoutName}</Text>
+          <Text style = {{fontSize: 20, fontWeight: 'bold', textAlign: 'center'}}> {props.route.params.workoutName}</Text>
           <View style = {styles.checklist}>
               <Text style = {styles.date}>{date.getMonth() + 1}/{date.getDate()}/{date.getFullYear()}</Text>
               <FlatList
-              data={exercises}
+              data={logList}
               renderItem={({ item }) => {
                   return(
                       <View style = {styles.checklist, {flexDirection:'row', paddingTop: 30, justifyContent: 'space-between'}}>
                           <View>
                               <TouchableOpacity
-                               onPress={() => props.navigation.navigate('LogWorkout', {exercise: item})}>
+                               onPress={() => props.navigation.navigate('LogWorkout', {exercise: item, exercises: exercises, workoutName: props.route.params.workoutName})}>
 								  <Text style={{ fontSize: 20, textAlign: 'center', fontWeight: 'bold'}}>{item.name}</Text>
                               </TouchableOpacity>
                           </View>
@@ -76,6 +101,23 @@ export default function WorkoutChecklist(props) {
           </View>
           <TouchableOpacity
           onPress={() => {
+              const alertOptions = [{
+                  text: "No",
+                  style: "cancel",
+                  onPress: () => console.log("Submit cancelled"),
+              },
+              {
+                  text: "Yes",
+                  onPress: () => submitLog(logList[0], 0)
+              }];
+              Alert.alert("Wait!", "Are you sure you want to submit your current workout session?", alertOptions)
+          }}>
+              <View style={styles.back}>
+                  <Text style={{fontSize: 25, textAlign: 'center', color: 'white' }}>Submit Workout Log</Text>
+              </View>
+          </TouchableOpacity>
+          {/* <TouchableOpacity
+          onPress={() => {
               let completed = isCompleted(exercises);
               if (completed) {
                 props.navigation.navigate("WorkoutsScreen")
@@ -88,7 +130,7 @@ export default function WorkoutChecklist(props) {
                 <Text 
                 style = {{fontSize: 25, textAlign: 'center', color: 'white' }}> Done </Text>
             </View>
-        </TouchableOpacity>  
+        </TouchableOpacity>   */}
       </SafeAreaView>
   );
 }
