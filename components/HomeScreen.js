@@ -1,30 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, SafeAreaView, FlatList, Dimensions } from 'react-native';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { useAuth } from '../contexts/AuthContext';
-
 import axios from 'axios';
 
 
 
 function HomeScreen(props) {
 	const [exerciseList, setExerciseList] = useState([]);
-
   const [userId, setUserId] = useAuth();
 
 	useEffect(() => {
 		getExercises();
 	}, [props]);
 
+
 	async function getExercises() {
-		console.log("getting workout data");
-		const { data } = await axios.get('https://gym-tracker-mas.herokuapp.com/api/users/1/workouts/')
+		const { data } = await axios.get('https://gym-tracker-mas.herokuapp.com/api/users/' + userId.toString() + '/workouts/')
 		let totalExercise = []
-		console.log(data);
 		for (let i = 0; i < data.length; i++) {
-			console.log("getting exercise data");
-			const exercise = await axios.get('https://gym-tracker-mas.herokuapp.com/api/users/1/workouts/' + data[i].id.toString() + '/exercises/');
-			console.log(exercise.data);
-			console.log(exercise.data.length);
+			const exercise = await axios.get('https://gym-tracker-mas.herokuapp.com/api/users/' + userId.toString() + '/workouts/' + data[i].id.toString() + '/exercises/');
 			totalExercise.push(exercise.data)
 		}	
 		setExerciseList(totalExercise.flat());
@@ -53,15 +48,42 @@ function HomeScreen(props) {
 			console.log(itemData);
 			if (itemData.item.upgrade) {
 				return (
-				  <TouchableOpacity activeOpacity={.8}>
-					<View style = {styles.workoutItem}>
+					<View style = {styles.notification}>
 					<Text style = {{fontSize: 25, textAlign: 'center', fontWeight: 'bold'}}> {"Exercise: " + itemData.item.name} </Text>
-						<Text style = {{fontSize: 25, textAlign: 'center',}}> {"We recomend that you increase your base weight by 5 percent. " + itemData.item.baseWeight + "lbs -> " + (2.5 * Math.ceil(itemData.item.baseWeight * 1.05/2.5)) +"lbs"} </Text>
-						<TouchableOpacity style = {styles.workoutItem}>
-							<Text style={{fontSize: 25, textAlign: 'center', fontWeight: 'bold'}}>Click here to increase</Text>
-						</TouchableOpacity>
+						<Text style = {{fontSize: 20, textAlign: 'center',}}> {"We recomend that you increase your base weight by 5 percent. "} </Text>
+            <View style = {{flexDirection: 'row', justifyContent: 'space-around'}}>
+              <Text style = {{fontSize: 25, textAlign: 'center', color: 'red'}}> {itemData.item.baseWeight + "lbs "} </Text>
+              <FontAwesome5
+                  color = 'black'
+                  size = '35'
+                  name = 'long-arrow-alt-right'/>
+              <Text style = {{fontSize: 25, textAlign: 'center', color: 'green'}}> {(5 * Math.ceil(itemData.item.baseWeight * 1.05/5)) +"lbs"} </Text>
+						</View>
+            <View style = {styles.options}>
+              <TouchableOpacity
+              onPress={async () => {
+                await axios.put('https://gym-tracker-mas.herokuapp.com/api/users/' + userId.toString() + '/workouts/' + itemData.item.workoutId.toString() + '/exercises/' + itemData.item.id + '/dismiss')
+                getExercises();
+                }}>
+                <View style = {{borderWidth: 2, borderColor: 'black', width: Dimensions.get('window').width/3}}>
+                  <Text style={{fontSize: 25, textAlign: 'center', fontWeight: 'bold'}}>Dismiss</Text>
+                </View>  
+              </TouchableOpacity>
+              <TouchableOpacity
+              onPress={async () => {
+                await axios.put('https://gym-tracker-mas.herokuapp.com/api/users/' + userId.toString() + '/workouts/' + itemData.item.workoutId.toString() + '/exercises/' + itemData.item.id.toString() + '/accept',
+                {
+                  baseWeight: (5 * Math.ceil(itemData.item.baseWeight * 1.05/5))
+                });
+                getExercises();
+                }}
+                >
+                <View style = {{borderWidth: 2, borderColor: 'black', width: Dimensions.get('window').width/3}}>
+                  <Text style={{fontSize: 25, textAlign: 'center', fontWeight: 'bold'}}>Accept</Text>
+                </View>   
+              </TouchableOpacity>
+            </View>
 					</View>
-				  </TouchableOpacity>
 				);
 			}
       }}
@@ -80,15 +102,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 30,
   },
-  workoutItem: {
+  notification: {
     padding: 10,
     marginVertical: 10,
     backgroundColor: 'white',
-    borderColor: '#2162C2',
+    borderColor: 'black',
     borderWidth: 5,
-    borderRadius: 25,
-    flex: .5,
     margin: 20,
+  },
+  options: {
+    flexDirection: 'row',
+    justifyContent: 'space-around'
   },
   input: {
     borderBottomColor: 'black',
