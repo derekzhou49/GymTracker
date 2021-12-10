@@ -10,6 +10,7 @@ export default function WorkoutChecklist(props) {
     const [userId, setUserId] = useAuth();
     const workoutId = params[0].workoutId;
     const [logList, setLogList] = useState([]);
+    const [update, setUpdate] = useState();
     const date = new Date();
 
     if (logList.length === 0) {
@@ -22,6 +23,7 @@ export default function WorkoutChecklist(props) {
             logItem.name = item.name;
             logItem.notes = "";
             logItem.index = index;
+            logItem.completed = false;
             return logItem;
         });
         setLogList(localLogList);
@@ -65,54 +67,71 @@ export default function WorkoutChecklist(props) {
         return true;
     }
 
-	return(
-	  <SafeAreaView>
-		  <Text style = {{fontSize: 35, fontWeight: 'bold', textAlign: 'center'}}> Workout Checklist </Text>
-		  <Text style = {{fontSize: 20, fontWeight: 'bold', textAlign: 'center'}}> {props.route.params.workoutName}</Text>
-		  <View style = {styles.checklist}>
-			  <Text style = {styles.date}>{date.getMonth() + 1}/{date.getDate()}/{date.getFullYear()}</Text>
-			  <FlatList
-			  data={logList}
-			  renderItem={({ item }) => {
-				  return(
-					  <View style = {styles.checklist, {flexDirection:'row', paddingTop: 30, justifyContent: 'space-between'}}>
-						  <View>
-							  <TouchableOpacity
-							   onPress={() => props.navigation.navigate('LogWorkout', {exercise: item, exercises: exercises, workoutName: props.route.params.workoutName})}>
+    return(
+      <SafeAreaView>
+          <Text style = {{fontSize: 35, fontWeight: 'bold', textAlign: 'center'}}> Workout Checklist </Text>
+          <Text style = {{fontSize: 20, fontWeight: 'bold', textAlign: 'center'}}> {props.route.params.workoutName}</Text>
+          <View style = {styles.checklist}>
+              <Text style = {styles.date}>{date.getMonth() + 1}/{date.getDate()}/{date.getFullYear()}</Text>
+              <FlatList
+              data={logList}
+              renderItem={({ item }) => {
+                  return(
+                      <View style = {styles.checklist, {flexDirection:'row', paddingTop: 30, justifyContent: 'space-between'}}>
+                          <View>
+                              <TouchableOpacity
+                               onPress={() => props.navigation.navigate('LogWorkout', {exercise: item, exercises: exercises, workoutName: props.route.params.workoutName})}>
 								  <Text style={{ fontSize: 20, textAlign: 'center', fontWeight: 'bold'}}>{item.name}</Text>
-							  </TouchableOpacity>
-						  </View>
-						  <TouchableOpacity
-						  onPress={() => {
-							  console.log("Press Handler")
-						  }}>
-							  <View style = {{alignItems: 'flex-end'}}>
-								{displayIcon(item.completed)}
-							  </View>
-						  </TouchableOpacity>
-					  </View>
-				  )
-			  }} />
-		  </View>
-		  <TouchableOpacity
-		  onPress={() => {
-			  const alertOptions = [{
-				  text: "No",
-				  style: "cancel",
-				  onPress: () => console.log("Submit cancelled"),
-			  },
-			  {
-				  text: "Yes",
-				  onPress: () => submitLog(logList[0], 0)
-			  }];
-			  Alert.alert("Wait!", "Are you sure you want to submit your current workout session?", alertOptions)
-		  }}>
-			  <View style={styles.back}>
-				  <Text style={{fontSize: 25, textAlign: 'center', color: 'white' }}>Submit Workout Log</Text>
-			  </View>
-		  </TouchableOpacity>
-	  </SafeAreaView>
-	);
+                              </TouchableOpacity>
+                          </View>
+                          <TouchableOpacity
+                          onPress={() => {
+                              let newItem = Object.assign({}, item);
+                              newItem.completed = !newItem.completed;
+                              setLogList(prev => {
+                                  prev.splice(newItem.index, 1, newItem);
+                                  return prev;
+                              });
+                              setUpdate(prev => !prev);
+                          }}>
+                              <View style = {{alignItems: 'flex-end'}}>
+                                {displayIcon(item.completed)}
+                              </View>
+                          </TouchableOpacity>
+                      </View>
+                  )
+              }} />
+          </View>
+          <TouchableOpacity
+          onPress={() => {
+              const alertOptions = [{
+                  text: "No",
+                  style: "cancel",
+                  onPress: () => console.log("Submit cancelled"),
+              },
+              {
+                  text: "Yes",
+                  onPress: () => submitLog(logList[0], 0)
+              }];
+              Alert.alert("Wait!", "Are you sure you want to submit your current workout session?", alertOptions)
+          }}>
+              <View style={styles.back}>
+                  <Text style={{fontSize: 25, textAlign: 'center', color: 'white' }}>Submit Workout Log</Text>
+              </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+          onPress={() => {
+                Alert.alert("Wait!", "If you go back now, your current workout log will not be saved. Are you sure you want to go back?",
+                [{text: "Yes", onPress: () => props.navigation.navigate("WorkoutsScreen")}, {text: "No", style: "cancel"}])
+          }}> 
+            <View style = {styles.back}>
+                <Text 
+                style = {{fontSize: 25, textAlign: 'center', color: 'white' }}> Go Back </Text>
+            </View>
+        </TouchableOpacity>
+      </SafeAreaView>
+  );
 }
 
 const styles = StyleSheet.create({
