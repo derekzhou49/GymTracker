@@ -10,6 +10,7 @@ export default function WorkoutChecklist(props) {
     const [userId, setUserId] = useAuth();
     const workoutId = params[0].workoutId;
     const [logList, setLogList] = useState([]);
+    const [update, setUpdate] = useState();
     const date = new Date();
 
     console.log("Loglist for workout checklist are");
@@ -25,6 +26,7 @@ export default function WorkoutChecklist(props) {
             logItem.name = item.name;
             logItem.notes = "";
             logItem.index = index;
+            logItem.completed = false;
             return logItem;
         });
         setLogList(localLogList);
@@ -37,9 +39,6 @@ export default function WorkoutChecklist(props) {
             return prev;
         })
     }
-
-    // console.log("LogList is")
-    // console.log(logList)
 
     const submitLog = (logItem, index) => {
         axios.post(`https://gym-tracker-mas.herokuapp.com/api/users/${userId}/workouts/${workoutId}/exercises/${logItem.exerciseId}/logs`, logItem)
@@ -70,7 +69,7 @@ export default function WorkoutChecklist(props) {
         return true;
     }
 
-  return(
+    return(
       <SafeAreaView>
           <Text style = {{fontSize: 35, fontWeight: 'bold', textAlign: 'center'}}> Workout Checklist </Text>
           <Text style = {{fontSize: 20, fontWeight: 'bold', textAlign: 'center'}}> {props.route.params.workoutName}</Text>
@@ -89,7 +88,13 @@ export default function WorkoutChecklist(props) {
                           </View>
                           <TouchableOpacity
                           onPress={() => {
-                              console.log("Press Handler")
+                              let newItem = Object.assign({}, item);
+                              newItem.completed = !newItem.completed;
+                              setLogList(prev => {
+                                  prev.splice(newItem.index, 1, newItem);
+                                  return prev;
+                              });
+                              setUpdate(prev => !prev);
                           }}>
                               <View style = {{alignItems: 'flex-end'}}>
                                 {displayIcon(item.completed)}
@@ -116,6 +121,17 @@ export default function WorkoutChecklist(props) {
                   <Text style={{fontSize: 25, textAlign: 'center', color: 'white' }}>Submit Workout Log</Text>
               </View>
           </TouchableOpacity>
+
+          <TouchableOpacity
+          onPress={() => {
+                Alert.alert("Wait!", "If you go back now, your current workout log will not be saved. Are you sure you want to go back?",
+                [{text: "Yes", onPress: () => props.navigation.navigate("WorkoutsScreen")}, {text: "No", style: "cancel"}])
+          }}> 
+            <View style = {styles.back}>
+                <Text 
+                style = {{fontSize: 25, textAlign: 'center', color: 'white' }}> Go Back </Text>
+            </View>
+        </TouchableOpacity>
           {/* <TouchableOpacity
           onPress={() => {
               let completed = isCompleted(exercises);

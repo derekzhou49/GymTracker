@@ -135,10 +135,9 @@ export default function LogWorkout(props) {
                 weight: weightValue,
                 exerciseId: props.route.params.exercise.exerciseId,
                 notes: notes,
-                index: props.route.params.exercise.index
+                index: props.route.params.exercise.index,
+                completed: props.route.params.exercise.completed
             }
-            console.log("Data is")
-            console.log(data)
             props.navigation.navigate("WorkoutChecklist", {workout: props.route.params.exercises, workoutLog: data, workoutName: props.route.params.workoutName})
         }} > 
             <View style = {styles.submit}>
