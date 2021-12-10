@@ -1,6 +1,6 @@
 import { useLinkProps } from '@react-navigation/native';
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, SafeAreaView, ScrollView, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import SliderText from 'react-native-slider-text';
 import { Dimensions } from 'react-native';
 import { useLog } from '../contexts/AuthContext';
@@ -11,8 +11,6 @@ const windowHeight = Dimensions.get('window').height;
 
 export default function LogWorkout(props) {
 
-  console.log("props for log workout are")
-  console.log(props)
     let itemExercise = "";
     let itemSets = "";
     let itemReps = "";
@@ -21,8 +19,6 @@ export default function LogWorkout(props) {
 
     const [notes, setNotes] = useState("");
     const [logList, setLogList] = useLog();
-    // console.log("LogWorkout loglist is")
-    // console.log(logList);
 
     let exerciseName = "Bench Press"
     
@@ -31,35 +27,32 @@ export default function LogWorkout(props) {
         itemSets = props.route.params.exercise.sets;
         itemReps = props.route.params.exercise.reps;
         itemWeight = props.route.params.exercise.weight;
-        // itemNotes = props.route.params.exercise.notes;
     }
 
     const [exercise, setExercise] = useState(itemExercise);
-    // const [sets, setSets] = useState(itemSets);
-    // const [reps, setReps] = useState(itemReps);
-    // const [weight, setWeight] = useState(itemWeight);
-
-
-
     const [setsValue, setSetsValue] = useState(itemSets);
     const [repsValue, setRepsValue] = useState(itemReps);
     const [weightValue, setWeightValue] = useState(itemWeight);
 
   return (
-      <SafeAreaView style={styles.container} 
-    //   borderColor="black" borderWidth="1.0"
-      >
-          <View style={styles.header} 
-        //   borderColor="black" borderWidth="1.0"
-          >
+      <SafeAreaView style={styles.container}>
+          <View style={styles.header}>
               <Text style={{ fontSize: 40, fontWeight: 'bold'}}> {"Log " + exerciseName } </Text>
           </View>
-
           <View style={styles.inputContainer}>
-
+              <View>
+                  <View>
+						  <Text style={{fontSize: 25, paddingRight: 20, }}>Notes</Text>
+						  <TextInput
+							placeholder = "Sleep, Calories, Difficulty, ... etc" 
+							multiline = {true}
+							style = {styles.notesInput}
+							onSubmitEditing={Keyboard.dismiss}
+							onChangeText={notes => setNotes(notes)}
+							/>
+                  </View>
+              </View>
             <View style = {{height: 100}}>
-                {/* <Text style={styles.inputName}>Sets</Text> */}
-
               <View style = {styles.slider}>
                 <SliderText
                     minimumTrackTintColor="#000"
@@ -111,18 +104,6 @@ export default function LogWorkout(props) {
                 </View>
               </View>
                 <Text style={styles.inputName}>Weight</Text>
-              <View>
-                  <View style = {styles.notesContainer}>
-                  <Text style={{fontSize: 25, paddingRight: 20, }}>Notes</Text>
-                  <TextInput
-                    placeholder = "Sleep, Calories, Difficulty, ... etc" 
-                    multiline = {true}
-                    style = {styles.notesInput}
-                    onChangeText={notes => setNotes(notes)}
-                    />
-
-                    </View>
-              </View>
 
           </View>
 
