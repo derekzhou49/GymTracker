@@ -34,7 +34,7 @@ var myID = "";
 function WelcomeScreen(props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [uerId, setUserId] = useAuth();
+  const [userId, setUserId] = useAuth();
 
   const loginOnPressHandler = () => {
     axios.post('https://gym-tracker-mas.herokuapp.com/auth/login', {

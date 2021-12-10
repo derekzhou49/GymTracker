@@ -8,6 +8,7 @@ import StartWorkout from './StartWorkout';
 import AddExercise from './AddExercise';
 import VisualizeLogs from './VisualizeLogs';
 import HomeScreen from './HomeScreen';
+import LoginStackNavigator from './LoginContainer';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -36,8 +37,8 @@ const WorkoutStackNavigator = () => {
         component={WorkoutChecklist} />
 
         <Stack.Screen
-        name="WelcomeScreen"
-        component={WelcomeScreen} />
+        name="LoginContainer"
+        component={LoginStackNavigator} />
 
         <Stack.Screen
         name="AddExercise"
