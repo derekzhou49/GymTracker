@@ -11,6 +11,7 @@ function WorkoutsScreen(props) {
     const onPressHandler = () => {
       props.navigation.navigate("StartWorkout")
     }
+
     // This is to manage Modal State
     const [isModalVisible, setModalVisible] = useState(false);
 
@@ -21,14 +22,13 @@ function WorkoutsScreen(props) {
     const [enteredWorkout, setEnteredWorkout] = useState("");
     const [workouts, setWorkouts] = useState([]);
     const [userId, setUserId] = useAuth();
+
 	useEffect(() => {
 		getWorkouts()
 	}, [props]);
 
 	async function getWorkouts() {
-		console.log("getting workout data");
 		const { data } = await axios.get('https://gym-tracker-mas.herokuapp.com/api/users/' + userId.toString() + '/workouts/');
-    console.log(data)
 		const workoutList = data.map((element, index) => { return({id: index + 1, value: element.name, workoutId: element.id}) });
 		setWorkouts(workoutList);
 	}
@@ -107,7 +107,6 @@ const styles = StyleSheet.create({
   },
   title: {
     alignItems: 'center',
-    // padding: 30,
   },
   workoutItem: {
     padding: 10,

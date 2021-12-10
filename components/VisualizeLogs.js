@@ -5,43 +5,30 @@ import SelectDropdown from 'react-native-select-dropdown';
 import DatePicker from 'react-native-datepicker';
 import axios from 'axios';
 
-
-
 const Graph = (props) => {
 	const [graphData, setGraphData] = useState({ x : [], y : [], data: []});
 	const [change, setChange] = useState(true);
 	const [popup, setPopup] = useState(false);
 	const [popupContent, setPopupContent] = useState("");
-	console.log("this is popupContent");
-	console.log(popupContent);
-
-
 
 	const getGraphData = async () => {
 		// use start date, end date, workout, exercise to make request for all the data, then parse and format it
-		console.log(change);
 		if (props.workout == null || props.exercise == null) {
 			return;
 		}
+
 		const res = await axios.get('https://gym-tracker-mas.herokuapp.com/api/users/1/workouts/' + props.workout.toString() + '/exercises/' + props.exercise.toString() + '/logs/?startDate=' + props.startDate + '&endDate=' + props.endDate);
 		const y = res.data.map( log => log.weight );
 		const x = res.data.map( log => log.date.split('T')[0]);
+
 		setGraphData( { x: x, y: y, data: res.data } );
 		setChange(false);
-		console.log("current graph data state");
-		console.log(graphData);
 	};
 
 	const dataClick = (index) => {
-		console.log("this index was clicked: " + index);
 		setPopup(true);
 		const datapoint = graphData.data[index]
-		console.log("this is the datapoint");
-		console.log(datapoint);
-		// setPopupContent("hello")
 		setPopupContent("Weight: " + datapoint.weight + "\nReps: " + datapoint.reps + "\nSets: " + datapoint.sets + "\nNotes: " + datapoint.notes + "\nDate: " + graphData.x[index]);
-		console.log(popupContent)
-		
 	}
 
 	const exitPopup = () => {
@@ -137,22 +124,18 @@ const VisualizeLogs = (props) => {
 		if (workoutList == null)  {
 			const res = await axios.get('https://gym-tracker-mas.herokuapp.com/api/users/1/workouts/');
 			setWorkoutList(res.data);
-			console.log(res.data);
 		}
-		console.log("workouts: " + workoutList);
 	};
 
 	const getExercises = async () => {
 		// make request and parse data to store ids in exercise list
 		if (exerciseList == null) {
-			console.log('here');
 			setExerciseList(['Please Choose a Workout']);
 		} else if (workout != null && change) {
 			const res = await axios.get('https://gym-tracker-mas.herokuapp.com/api/users/1/workouts/' + workout.toString() + '/exercises/');
 			setExerciseList(res.data);
 			setChange(false);
 		}
-		console.log("exercises: " + exerciseList);
 	};
 
 	useEffect(() => {

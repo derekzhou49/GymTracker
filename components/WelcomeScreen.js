@@ -5,11 +5,6 @@ import { useAuth } from '../contexts/AuthContext';
 import { useCardAnimation, createStackNavigator } from '@react-navigation/stack';
 import SignupScreen from './SignupScreen';
 
-
-
-var myID = "";
-
-
 function WelcomeScreen(props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -22,9 +17,6 @@ function WelcomeScreen(props) {
     })
     .then((response) => {
       setUserId(response.data.id);
-      console.log(response.data);
-      myID = response.data.id;
-      console.log(response.data.id);
       props.navigation.replace('MainContainer');
     }, (error) => {
       console.log(error);

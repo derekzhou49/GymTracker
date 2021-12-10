@@ -1,57 +1,50 @@
-import { TabRouter } from '@react-navigation/routers';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, SafeAreaView, FlatList } from 'react-native';
 import WorkoutChecklist from './WorkoutChecklist';
-import { CHEST_TRI, BACK_BI, LEG_SHOULDER } from './../testing/data';
 import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios';
 
-var DATA1 = [CHEST_TRI, BACK_BI, LEG_SHOULDER]
-
 function StartWorkout(props) {
 
-  // Start the workout
-  // For testing purposes, later change to fetch workout data from database
   let params = props.route.params.params;
-  // let workoutID = parseInt(params.workoutID) - 1;
 
   const [userId, setUserId] = useAuth();
   const [exercises, setExercises] = useState([]);
+
   useEffect(() => {
     getExercises()
   }, [props]);
 
   async function getExercises() {
-    console.log("getting exercises");
     const { data } = await axios.get('https://gym-tracker-mas.herokuapp.com/api/users/' + userId.toString() + '/workouts/' + params.workoutID.toString() + '/exercises/');
-    console.log(data);
     setExercises(data);
   }
     
   const onPressHandler = () => {
     props.navigation.navigate("WorkoutChecklist", {workout: exercises, workoutName: params.workoutName});
   }
-  // Function to render each item
+
   const renderItem = item => {
     return (
       <TouchableOpacity
       onPress={async () => {
-      await axios.delete('https://gym-tracker-mas.herokuapp.com/api/users/' + userId.toString() + '/workouts/' + params.workoutID.toString() + '/exercises/' + item.item.id.toString());
-      getExercises();
-      }} >
+		  await axios.delete('https://gym-tracker-mas.herokuapp.com/api/users/' + userId.toString() + '/workouts/' + params.workoutID.toString() + '/exercises/' + item.item.id.toString());
+		  getExercises();
+      }}>
         <View style={styles.workoutItem}>
             <Text style={{ fontSize: 20, textAlign: 'center', fontWeight: 'bold'}}>{item.item.name}</Text>
             <Text style={{ fontSize: 15, textAlign: 'center'}}> {item.item.baseSets} sets, {item.item.baseReps} reps, {item.item.baseWeight} lbs </Text>
         </View>
       </TouchableOpacity>
-    )};
+    )
+  };
 
-      if ((props.route.params !== undefined) && (props.route.params.data !== undefined)) {
-        const newData = props.route.params.data;
-        props.route.params.data = undefined
-        setExercises(prevExercises => [...prevExercises, newData])
-      }
-      return (
+  if ((props.route.params !== undefined) && (props.route.params.data !== undefined)) {
+    const newData = props.route.params.data;
+    props.route.params.data = undefined
+    setExercises(prevExercises => [...prevExercises, newData])
+  }
+  return (
     <SafeAreaView style={styles.screen}>
       <View style={styles.title}>
         <Text style={{ fontSize: 35, fontWeight: 'bold'}}> {params.workoutName} </Text>
@@ -78,8 +71,8 @@ function StartWorkout(props) {
           </View>
         </TouchableOpacity>  
     </SafeAreaView>
-    );
-  }
+  );
+}
 
 export default StartWorkout;
 
