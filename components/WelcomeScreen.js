@@ -5,28 +5,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useCardAnimation, createStackNavigator } from '@react-navigation/stack';
 import SignupScreen from './SignupScreen';
 
-const Stack = createStackNavigator();
 
-const LoginNavigator = () => {
-  return(
-      <Stack.Navigator
-      screenOptions = {{
-        headerShown: false,
-      }}>
-        <Stack.Screen
-        name="WelcomeScreen"
-        component={WorkoutsScreen} />
-        <Stack.Screen
-        name="SignupScreen"
-        component={SignupScreen} />
-      </Stack.Navigator>
-  )
-}
-// function GoWorkoutsScreen({ navigation }) {
-//   const onPressHandler = () => {
-//     navigation.navigate("WorkoutsScreen");
-//   }
-// }
 
 var myID = "";
 
@@ -58,24 +37,10 @@ function WelcomeScreen(props) {
       );
     });
   }
-
-  // const registerOnPressHandler = () => {
-  //   axios.post('https://gym-tracker-mas.herokuapp.com/auth/register', {
-  //       email: username,
-  //       name: username,
-  //       password: password,
-  //   })
-  //   .then((response) => {
-  //     console.log(response.data);
-  //   }, (error) => {
-  //     console.log(error);
-  //   });
-  // }
-
   return (
     <View style={styles.screen}>
       <View style={styles.title}>
-        <Text style={{ fontSize: 40, color: '#2162C2'}}> GymTracker </Text>
+        <Text style={styles.titleText}> GymTracker </Text>
       </View>
       <View style = {{paddingBottom: 30, paddingTop: 50,}}>
         <TextInput
@@ -85,7 +50,7 @@ function WelcomeScreen(props) {
         style={styles.input}
         onChangeText={text => setUsername(text)}/>
       </View>
-      <View style = {{paddingBottom: 30, fontSize: 50,}}>
+      <View style = {{paddingBottom: 30,}}>
         <TextInput
         autoCapitalize='none'
         autoCorrect = {false}
@@ -100,7 +65,6 @@ function WelcomeScreen(props) {
           style={{ padding: 10, fontSize: 20 }}
           title= "Sign In"
           color= {'white'}
-          // for debugging 
           onPress={loginOnPressHandler} />
         </View>
       </TouchableOpacity>
@@ -124,6 +88,13 @@ const styles = StyleSheet.create({
   title: {
     alignItems: 'center',
     padding: 30,
+  },
+  titleText: {
+    fontSize: 40, 
+    color: '#2162C2',
+  },
+  inputView: {
+
   },
   input: {
     borderColor: '#2162C2',

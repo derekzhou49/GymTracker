@@ -49,55 +49,54 @@ function WorkoutsScreen(props) {
       <View style={styles.title}>
         <Text style={{ fontSize: 40, fontWeight: 'bold'}}> Workouts </Text>
       </View>
-      <View style = {{maxHeight: 450,}}>
-      <FlatList
-      initialNumToRender = {2}
-      keyExtractor = {(item, index) => item.id.toString()}
-      data = {workouts}
-      renderItem = {itemData => (
-		 <Swipeable 
-		 leftActionActivationDistance={200}
-		 leftContent={
-			<View style={{backgroundColor: 'red', justifyContent: 'center'}}>
-				<Text style = {{fontSize: 25, textAlign: 'center', fontWeight: 'bold'}}>Delete!</Text>
-			</View>
-		 } 
-		 onLeftActionComplete={ async () => {
-			await axios.delete('https://gym-tracker-mas.herokuapp.com/api/users/' + userId.toString() + '/workouts/' + itemData.item.workoutId);
-			getWorkouts();
-		 }}
-		 >
-          <TouchableOpacity activeOpacity={.8} onPress={() => props.navigation.navigate("StartWorkout", {screen: "StartWorkout", params: {workoutName: itemData.item.value, workoutID: itemData.item.id}})}>
-            <View style = {styles.workoutItem}>
-            <Text style = {{fontSize: 25, textAlign: 'center', fontWeight: 'bold'}}> {"Workout " + itemData.item.id} </Text>
-                <Text style = {{fontSize: 25, textAlign: 'center',}}> {itemData.item.value} </Text>
-            </View>
-          </TouchableOpacity>
-		</Swipeable>
-      )}
-      />
+      <View style = {{maxHeight: 450}}>
+        <FlatList
+          initialNumToRender = {2}
+          keyExtractor = {(item, index) => item.id.toString()}
+          data = {workouts}
+          renderItem = {itemData => (
+		        <Swipeable 
+              leftActionActivationDistance={200}
+              leftContent={
+                <View style={{backgroundColor: 'red', justifyContent: 'center'}}>
+                  <Text style = {{fontSize: 25, textAlign: 'center', fontWeight: 'bold'}}>Delete!</Text>
+                </View>
+		          } 
+		          onLeftActionComplete={ async () => {
+			          await axios.delete('https://gym-tracker-mas.herokuapp.com/api/users/' + userId.toString() + '/workouts/' + itemData.item.workoutId);
+			          getWorkouts();
+		            }}
+		        >
+              <TouchableOpacity activeOpacity={.8} onPress={() => props.navigation.navigate("StartWorkout", {screen: "StartWorkout", params: {workoutName: itemData.item.value, workoutID: itemData.item.id}})}>
+                <View style = {styles.workoutItem}>
+                  <Text style = {{fontSize: 25, textAlign: 'center', fontWeight: 'bold'}}> {"Workout " + itemData.item.id} </Text>
+                  <Text style = {{fontSize: 25, textAlign: 'center',}}> {itemData.item.value} </Text>
+                </View>
+              </TouchableOpacity>
+		        </Swipeable>
+          )}
+        />
       </View>
       <TouchableOpacity onPress = {toggleModalVisibility}> 
-          <View style = {styles.newWorkout}>
-            <Text style = {{fontSize: 30, textAlign: 'center', color: 'white'}}> Add Workout </Text>
+        <View style = {styles.newWorkout}>
+          <Text style = {{fontSize: 30, textAlign: 'center', color: 'white'}}> Add Workout </Text>
+        </View>
+      </TouchableOpacity>  
+      <Modal 
+          animationType="slide" 
+          transparent visible={isModalVisible} 
+          presentationStyle="overFullScreen" 
+          onDismiss={toggleModalVisibility}>
+          <View style={styles.viewWrapper}>
+            <View style={styles.modalView}>
+                <Text style = {{textAlign: 'center', fontWeight: 'bold'}}> Workout Name </Text>
+                <TextInput placeholder="Enter Workout Name" 
+                            value={enteredWorkout} style={styles.textInput} 
+                            onChangeText={workoutInputHandler} />
+                <Button title= "Add" onPress={addWorkoutHandler} />
+            </View>
           </View>
-        </TouchableOpacity>  
-        <Modal animationType="slide" 
-                   transparent visible={isModalVisible} 
-                   presentationStyle="overFullScreen" 
-                   onDismiss={toggleModalVisibility}>
-                <View style={styles.viewWrapper}>
-                    <View style={styles.modalView}>
-                        <Text style = {{textAlign: 'center', fontWeight: 'bold'}}> Workout Name </Text>
-                        <TextInput placeholder="Enter Workout Name" 
-                                   value={enteredWorkout} style={styles.textInput} 
-                                   onChangeText={workoutInputHandler} />
-  
-                        {/** This button is responsible to close the modal */}
-                        <Button title= "Add" onPress={addWorkoutHandler} />
-                    </View>
-                </View>
-            </Modal>
+        </Modal>
     </SafeAreaView>
   );
 }
