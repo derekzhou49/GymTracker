@@ -16,9 +16,9 @@ function SignupScreen(props) {
             password: password,
         })
         .then((response) => {
-            console.log(response.data);
+            // console.log(response.data);
         }, (error) => {
-            console.log(error);
+            // console.log(error);
         });
         Alert.alert(
           "Success!",
@@ -44,10 +44,10 @@ function SignupScreen(props) {
         onChangeText={text => setEmail(text)}/>
       </View>
       <View style = {{paddingBottom: 30}}>
-        <Text style={{ fontSize: 20, color: 'black', textAlign: 'center'}}> Username </Text>
+        <Text style={{ fontSize: 20, color: 'black', textAlign: 'center'}}> Name </Text>
         <TextInput
         autoCapitalize='none'
-        placeholder="Enter Username"
+        placeholder="Enter Name"
         style={styles.input}
         onChangeText={text => setUsername(text)}/>
       </View>

@@ -111,8 +111,8 @@ const Graph = (props) => {
 }
 
 const VisualizeLogs = (props) => {
-	const [startDate, setStartDate] = useState("11-02-2021")
-	const [endDate, setEndDate] = useState("11-02-2021")
+	const [startDate, setStartDate] = useState("12-11-2021")
+	const [endDate, setEndDate] = useState("12-11-2021")
 	const [workout, setWorkout] = useState(null)
 	const [exercise, setExercise] = useState(null)
 	const [workoutList, setWorkoutList] = useState(null);
