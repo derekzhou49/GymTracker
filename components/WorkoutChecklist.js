@@ -14,7 +14,7 @@ export default function WorkoutChecklist(props) {
 
     const prependZero = num => {
         if (num.length == 1) {
-            return `0${num}}`;
+            return `0${num}`;
         } else {
             return num.toString();
         }
@@ -24,9 +24,6 @@ export default function WorkoutChecklist(props) {
     const month = prependZero(date.getMonth() + 1);
     const day = prependZero(date.getDate());
     const year = date.getYear() + 1900;
-
-    console.log("LogList is")
-    console.log(logList)
 
     if (logList.length === 0) {
         let localLogList = exercises.map((item, index) => {
