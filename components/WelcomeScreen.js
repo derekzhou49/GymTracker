@@ -22,7 +22,7 @@ function WelcomeScreen(props) {
       console.log(error);
       Alert.alert(
         "Error!",
-        "Incorrect Username or Password",
+        "Incorrect Email or Password",
         [
           { text: "OK", onPress: () => console.log("OK Pressed") }
         ]
@@ -38,7 +38,7 @@ function WelcomeScreen(props) {
         <TextInput
         autoCapitalize='none'
         autoCorrect = {false}
-        placeholder="Enter Username"
+        placeholder="Enter Email"
         style={styles.input}
         onChangeText={text => setUsername(text)}/>
       </View>
