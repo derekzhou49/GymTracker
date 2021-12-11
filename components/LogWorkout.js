@@ -114,6 +114,7 @@ export default function LogWorkout(props) {
                 weight: weightValue,
                 exerciseId: props.route.params.exercise.exerciseId,
                 notes: notes,
+                date: props.route.params.exercise.date,
                 index: props.route.params.exercise.index,
                 completed: props.route.params.exercise.completed
             }

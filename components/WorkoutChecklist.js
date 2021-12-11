@@ -11,7 +11,22 @@ export default function WorkoutChecklist(props) {
     const workoutId = params[0].workoutId;
     const [logList, setLogList] = useState([]);
     const [update, setUpdate] = useState();
+
+    const prependZero = num => {
+        if (num.length == 1) {
+            return `0${num}}`;
+        } else {
+            return num.toString();
+        }
+    };
+
     const date = new Date();
+    const month = prependZero(date.getMonth() + 1);
+    const day = prependZero(date.getDate());
+    const year = date.getYear() + 1900;
+
+    console.log("LogList is")
+    console.log(logList)
 
     if (logList.length === 0) {
         let localLogList = exercises.map((item, index) => {
@@ -23,6 +38,7 @@ export default function WorkoutChecklist(props) {
             logItem.name = item.name;
             logItem.notes = "";
             logItem.index = index;
+            logItem.date = `${month}-${day}-${year}`
             logItem.completed = false;
             return logItem;
         });
