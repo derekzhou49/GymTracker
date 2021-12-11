@@ -104,8 +104,8 @@ export default function AddExercise(props) {
             // console.log(`${itemReps}; ${itemSets}; ${itemWeight}; ${itemExercise}`);
             function addExercise() {
                 const newExerciseData = {
-                    baseReps: Math.floor(setsValue),
-                    baseSets: Math.floor(repsValue),
+                    baseReps: Math.floor(repsValue),
+                    baseSets: Math.floor(setsValue),
                     baseWeight: Math.floor(weightValue),
                     name: exercise
                 };
