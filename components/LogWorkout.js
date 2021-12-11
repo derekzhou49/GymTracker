@@ -18,7 +18,7 @@ export default function LogWorkout(props) {
 
     const [notes, setNotes] = useState("");
 
-    let exerciseName = "Bench Press"
+    let exerciseName = props.route.params.exercise.name;
     
     if (props.route.params !== undefined) {
         itemExercise = props.route.params.exercise.name;
@@ -40,7 +40,7 @@ export default function LogWorkout(props) {
           <View style={styles.inputContainer}>
               <View>
                   <View>
-						  <Text style={{fontSize: 25, paddingRight: 20, }}>Notes</Text>
+						  <Text style={{fontSize: 25, paddingRight: 20, textAlign: "center"}}>Notes</Text>
 						  <TextInput
 							placeholder = "Sleep, Calories, Difficulty, ... etc" 
 							multiline = {true}
