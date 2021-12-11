@@ -4,7 +4,7 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios';
 
-
+console.disableYellowBox = true;
 
 function HomeScreen(props) {
 	const [exerciseList, setExerciseList] = useState([]);
