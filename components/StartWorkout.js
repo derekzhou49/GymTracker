@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, SafeAreaView, FlatList } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, SafeAreaView, FlatList, Alert  } from 'react-native';
 import WorkoutChecklist from './WorkoutChecklist';
 import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios';
@@ -27,10 +27,14 @@ function StartWorkout(props) {
   const renderItem = item => {
     return (
       <TouchableOpacity
-      onPress={async () => {
-		  await axios.delete('https://gym-tracker-mas.herokuapp.com/api/users/' + userId.toString() + '/workouts/' + params.workoutID.toString() + '/exercises/' + item.item.id.toString());
-		  getExercises();
-      }}>
+      onPress={
+        () => {
+          const options = [{text: "No", style: "cancel"}, {text: "Yes", onPress: async () => {
+            await axios.delete('https://gym-tracker-mas.herokuapp.com/api/users/' + userId.toString() + '/workouts/' + params.workoutID.toString() + '/exercises/' + item.item.id.toString());
+            getExercises();
+            }}];
+          Alert.alert("Wait!", "You are about to delete an exercise from the the workout. Are you sure you want to do this?", options)
+        }}>
         <View style={styles.workoutItem}>
             <Text style={{ fontSize: 20, textAlign: 'center', fontWeight: 'bold'}}>{item.item.name}</Text>
             <Text style={{ fontSize: 15, textAlign: 'center'}}> {item.item.baseSets} sets, {item.item.baseReps} reps, {item.item.baseWeight} lbs </Text>
